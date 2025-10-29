@@ -1,0 +1,9 @@
+<{{fragment.tag}}{{fragment.attrs}} style="width: auto; display: inline; vertical-align: top"></input>
+<output style="padding-left: 1em" for="{{ fragment.attrs.name }}" id="{{ fragment.attrs.id }}_value" aria-hidden="true" style="vertical-align: top;"></output>
+
+<script>
+  document.getElementById('{{ fragment.attrs.id }}_value').textContent = document.getElementById('{{ fragment.attrs.id }}').value;
+  document.getElementById('{{ fragment.attrs.id }}').addEventListener('input', function() {
+    document.getElementById('{{ fragment.attrs.id }}_value').textContent = this.value;
+  });
+</script>

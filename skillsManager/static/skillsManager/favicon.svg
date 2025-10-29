@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733334 67.733333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="favicon.svg"
+   inkscape:export-filename="favicon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="4.0312099"
+     inkscape:cx="162.48224"
+     inkscape:cy="130.23385"
+     inkscape:window-width="2560"
+     inkscape:window-height="1301"
+     inkscape:window-x="4072"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g3" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-41.715557,-67.666435)">
+    <g
+       id="g3"
+       inkscape:label="logo">
+      <g
+         id="g2"
+         transform="matrix(8.439936,0,0,6.4524891,-310.36108,-368.9505)">
+        <rect
+           style="fill:#206ea7;fill-opacity:1;stroke:none;stroke-width:0.0740942;stroke-opacity:1"
+           id="rect2"
+           width="8.0253372"
+           height="10.497241"
+           x="41.715557"
+           y="67.666435"
+           inkscape:label="background" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:13.0696px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.204213"
+           x="43.182274"
+           y="75.775261"
+           id="text1"
+           inkscape:label="skills"><tspan
+             sodipodi:role="line"
+             id="tspan1"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.0696px;font-family:Serif;-inkscape-font-specification:'Serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.204213;stroke-opacity:1"
+             x="43.182274"
+             y="75.775261">s</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

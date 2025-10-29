@@ -1,0 +1,24 @@
+{% load static %}
+.iommi_logo_menu {
+    background-image: url({% static 'skillsManager/skillsManagerLogo.svg' %});
+    background-size: 100%;
+    min-height: 7em;
+    margin-right: 0.7rem;
+}
+.main_menu {
+    background: linear-gradient(180deg, rgba(57, 68, 116, 1) 25%, rgba(137, 188, 98, 1) 100%);
+
+    & a {
+	    color: #eeeeee;
+    }
+
+    & a#menu-logo:hover {
+        background-color: revert-layer;
+    }
+    
+    & li.is_active > details > summary > a, & li.is_active > a {
+        font-weight: bold;
+    }
+}
+
+
