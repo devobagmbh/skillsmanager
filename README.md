@@ -2,7 +2,31 @@
 
 Management of skills, certificates and projects for consulting companies.
 
-# Database design
+# Configuration
+
+Skills manager is configured using the following environment variables:
+
+* DATABASE_URL: Database configuration for Django. See [the dj-database-url documentation](https://pypi.org/project/dj-database-url/) for details
+* SECRET_KEY: The Django secret key
+* APPLICATION_HOST: Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true.
+* DEBUG: Whether to run the application in Django debug mode [False]
+* AZURE_ENABLED: Whether login via Azure entra id is enabled. See [the django-azure-auth documentation](https://pypi.org/project/django-azure-auth/) for details
+* AZURE_CLIENT_ID: Azure client id
+* AZURE_CLIENT_SECRET: Azure client secret
+* AZURE_TENANT_ID: Azure tenant id
+* AZURE_PROMPT: Whether to just accept the login (`none`) force to user to `login`, `consent` again or select an account (`select_account`) [none]
+* AZURE_ROLES: Role to Django group mapping in JSON form. e.g.:
+```json
+{
+        "95170e67-2bbf-4e3e-a4d7-e7e5829fe7a7": "GroupName1", # mapped to one Django group
+        "3dc6539e-0589-4663-b782-fef100d839aa": ["GroupName2", "GroupName3"] # mapped to multiple Django groups
+}
+```
+
+
+# Development
+
+## Database design
 
 ```mermaid
 erDiagram
