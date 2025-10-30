@@ -25,7 +25,6 @@ class ProfileEdit(Form):
         title="Profile",
         auto__model=Profile,
         instance=lambda pk, **_: Profile.objects.get(pk=pk),
-        fields__profile_admins__include=False,
     )
     edit_meta = Form.create_or_edit(
         title="Personal data",
@@ -84,22 +83,10 @@ class ProfileEdit(Form):
 class ProfileView(Page):
     profile_view = Table(
         auto__model=Profile,
-        rows=lambda user, **_: (
-            Profile.objects.filter(profile_admins=user)
-            if not user.is_staff
-            else Profile.objects.all()
-        ),
         page_size=10,
         columns__birthday=Column(
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).birthday
-                if ProfileMeta.objects.filter(profile=row).count() == 1
-                else ""
-            ),
-        ),
-        columns__gender=Column(
-            cell__value=lambda row, **_: (
-                ProfileMeta.objects.get(profile=row).gender
                 if ProfileMeta.objects.filter(profile=row).count() == 1
                 else ""
             ),

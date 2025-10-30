@@ -42,7 +42,6 @@ erDiagram
 	ProfileMeta {
 		ref profile FK "Reference to profile"  
 		date birthday  "Birthday of person"  
-		string gender  "Gender of person"  
 		image photo  "Photo of person"  
 	}
 
