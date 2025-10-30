@@ -11,7 +11,6 @@ class Profile(models.Model):
     email = models.EmailField()
     active_since = models.DateField(default=now)
     active_until = models.DateField(blank=True, null=True)
-    profile_admins = models.ManyToManyField(User, blank=True)
 
     def get_absolute_url(self):
         return reverse("profile-view", kwargs={"pk": self.pk})
@@ -26,7 +25,6 @@ auditlog.register(Profile)
 class ProfileMeta(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     birthday = models.DateField()
-    gender = models.CharField(max_length=200)
     photo = models.ImageField(blank=True, null=True)
 
     def __str__(self):
