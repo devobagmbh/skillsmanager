@@ -1,6 +1,47 @@
 # Skills manager
 
+![Skills Manager](skillsManager/static/skillsManager/skillsManagerLogo.png)
+
 Management of skills, certificates and projects for consulting companies.
+
+![Static Badge](https://img.shields.io/badge/Made_with-Django-support)
+
+# Installation
+
+## Docker
+
+TODO
+
+## Python native
+
+Create a venv locally and activate it:
+
+    python -m venv .venv
+	. .venv/bin/activate
+
+Install the requirements:
+
+    pip -r requirements.txt
+
+Set the required environment variables (see [below](#configuration)).
+
+    export SECRET_KEY=secret
+
+Initialize the database
+
+    python manage.py migrate
+
+Create a superuser
+
+    python manage.py createsuperuser
+
+For local testing, use 
+
+    python manage.py runserver
+
+For production deployment, use one of the recommended techniques as described in the [Django documentation](https://docs.djangoproject.com/en/5.2/howto/deployment/).
+
+# Usage
 
 # Configuration
 
