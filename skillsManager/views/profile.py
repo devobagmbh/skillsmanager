@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.utils.safestring import mark_safe
 
 from ..widgets import range_field
 from ..models import (
@@ -90,6 +91,18 @@ class ProfileView(Page):
                 if ProfileMeta.objects.filter(profile=row).count() == 1
                 else ""
             ),
+        ),
+        columns__photo=Column(
+            cell__value=lambda row, **_: (
+                ProfileMeta.objects.get(profile=row).photo.url
+                if ProfileMeta.objects.filter(profile=row).count() == 1
+                and ProfileMeta.objects.get(profile=row).photo.name != ""
+                else ""
+            ),
+            cell__format=lambda value, **_: (
+                mark_safe('<img src="%s" />' % (value)) if value != "" else ""
+            ),
+            cell__attrs__style={"max-width": "4em", "max-height": "4em"},
         ),
         columns__edit=Column.edit(),
         columns__delete=Column.delete(),
