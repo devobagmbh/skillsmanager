@@ -60,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "iommi.live_edit.Middleware",
     "iommi.sql_trace.Middleware",
     "iommi.profiling.Middleware",
