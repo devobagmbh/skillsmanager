@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.utils.safestring import mark_safe
+from django.utils.timezone import now
 
 from ..widgets import range_field
 from ..models import (
@@ -69,6 +70,7 @@ class ProfileEdit(Form):
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
         columns__active_since__field__include=True,
+        columns__active_since__field__initial=now(),
         columns__active_until__field__include=True,
         columns__delete=EditColumn.delete(),
         **{

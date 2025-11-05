@@ -21,4 +21,15 @@
     }
 }
 
+.links {
+    padding-top:1em;
+}
 
+.preview {
+	width: 73em;
+	height: 100em;
+	margin-top: 1em;
+	border: 1px dashed black;
+	position: absolute;
+	top: 15em;
+}
