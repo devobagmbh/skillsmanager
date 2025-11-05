@@ -1,0 +1,78 @@
+from django.utils.timezone import now
+
+from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table
+from skillsManager.models import Project, ProjectLog, Customer, CustomerLog
+from iommi.form import save_nested_forms
+
+
+class CustomerEdit(Form):
+    edit_customer = Form.edit(
+        title="Customer",
+        auto__model=Customer,
+        instance=lambda pk, **_: Customer.objects.get(pk=pk),
+    )
+    projects = EditTable(
+        title="Projects",
+        auto__model=Project,
+        rows=lambda pk, **_: Project.objects.filter(
+            customer=Customer.objects.get(pk=pk)
+        ),
+        columns__customer__field=Field.non_rendered(
+            initial=lambda pk, **_: Customer.objects.get(pk=pk)
+        ),
+        columns__delete=EditColumn.delete(),
+        columns__name__field__include=True,
+        columns__description__field__include=True,
+        columns__active_since__field__include=True,
+        columns__active_since__field__initial=now(),
+        columns__active_until__field__include=True,
+        **{
+            "attrs__data-iommi-edit-table-delete-with": "checkbox",
+        }
+    )
+    logs = EditTable(
+        title="Customer logs",
+        auto__model=CustomerLog,
+        rows=lambda pk, **_: CustomerLog.objects.filter(
+            customer=Customer.objects.get(pk=pk)
+        ),
+        columns__delete=EditColumn.delete(),
+        columns__notice__field__include=True,
+        **{
+            "attrs__data-iommi-edit-table-delete-with": "checkbox",
+        }
+    )
+    project_logs = EditTable(
+        title="Project logs",
+        auto__model=ProjectLog,
+        page_size=10,
+        rows=lambda pk, **_: ProjectLog.objects.filter(
+            project__customer=Customer.objects.get(pk=pk)
+        ),
+        columns__timestamp__field__initial=now(),
+        columns__notice__field__include=True,
+    )
+
+    class Meta:
+        actions__submit__post_handler = save_nested_forms
+        extra__redirect_to = lambda **_: "/projects"
+
+
+class CustomerView(Page):
+    customers = Table(
+        auto__model=Customer,
+        page_size=10,
+        columns__projects=Column(
+            cell__value=lambda row, **_: Project.objects.filter(customer=row)
+        ),
+        columns__edit=Column.edit(),
+        columns__delete=Column.delete(),
+    )
+    new_customer = Form.create(
+        title="New customer",
+        auto__model=Customer,
+        extra__redirect_to=".",
+    )
+
+
+customer_delete = Form.delete(instance=lambda pk, **_: Customer.objects.get(pk=pk))

@@ -3,47 +3,58 @@ from django import forms
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
 from weasyprint import HTML
-from ..models import Profile
-from django.template import loader
-from iommi import Page, Form, Field, html
-
-
-class CVSelectProfileForm(forms.Form):
-    profile = forms.ModelChoiceField(queryset=Profile.objects)
-
-
-def view(request):
-    if request.method == "POST":
-        form = CVSelectProfileForm(request.POST)
-        if form.is_valid():
-            template = loader.get_template("cvreport.html")
-            pdf = HTML(
-                string=template.render({"profile": form.cleaned_data["profile"]})
-            )
-            buffer = io.BytesIO()
-            pdf.write_pdf(buffer)
-            buffer.seek(0)
-            return FileResponse(buffer, as_attachment=True, filename="cv.pdf")
-    else:
-        form = CVSelectProfileForm()
-    return HttpResponse(render(request, "cv.html", {"form": form}))
+from ..models import Profile, Template
+from django.template import Template as DjangoTemplate
+from django.template import Context
+from iommi import Action, Page, Form, Field, html
+from iommi.views import HttpResponseRedirect
 
 
 class CVPage(Page):
-    def do_export(form, page, **_):
+    def do_export(form, **_):
         if form.is_valid():
-            template = loader.get_template("cvreport.html")
+            template = DjangoTemplate(form.fields["template"].value.template)
             pdf = HTML(
-                string=template.render({"profile": form.fields["profile"].value})
+                string=template.render(
+                    context=Context({"profile": form.fields["profile"].value})
+                )
             )
             buffer = io.BytesIO()
             pdf.write_pdf(buffer)
             buffer.seek(0)
             return FileResponse(buffer, as_attachment=True, filename="cv.pdf")
+
+    def do_preview(form, **_):
+        if form.is_valid():
+            template = DjangoTemplate(form.fields["template"].value.template)
+            form.extra["preview"] = template.render(
+                context=Context({"profile": form.fields["profile"].value})
+            )
+        else:
+            form.extra["preview"] = ""
+        return HttpResponseRedirect(".")
 
     title = html.h1("CV exporter")
 
     profile_select = Form(
+        extra__preview="",
         fields__profile=Field.choice_queryset(Profile.objects, model=Profile),
-        actions__submit__post_handler=do_export,
+        fields__template=Field.choice_queryset(
+            Template.objects,
+            model=Template,
+            initial=lambda **_: (
+                Template.objects.first() if Template.objects.count() > 0 else None
+            ),
+        ),
+        actions__preview=Action.button(
+            display_name="Preview", attrs__name="-preview", post_handler=do_preview
+        ),
+        actions__export=Action.primary(display_name="Export", post_handler=do_export),
+        fields__preview=Field(
+            tag="iframe",
+            attrs__class__preview=True,
+            attrs__srcdoc=lambda form, **_: form.extra["preview"],
+            required=False,
+            after=99,
+        ),
     )

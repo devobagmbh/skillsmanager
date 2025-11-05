@@ -1,6 +1,15 @@
 from django.urls import path
 
-from .views import cv, profile, skill, certificate, skill_search, home
+from .views import (
+    cv,
+    profile,
+    skill,
+    certificate,
+    skill_search,
+    home,
+    project,
+    template,
+)
 from iommi.experimental.main_menu import MainMenu, M
 
 menu_declaration = MainMenu(
@@ -63,6 +72,42 @@ menu_declaration = MainMenu(
                     "<int:pk>/delete/",
                     certificate.vendor_delete.as_view(),
                     name="vendor-delete",
+                ),
+            ],
+        ),
+        projects=M(
+            icon="book",
+            view=project.CustomerView().as_view(),
+            paths=[
+                path("<int:pk>/", project.CustomerEdit().as_view, name="customer-view"),
+                path(
+                    "<int:pk>/edit/",
+                    project.CustomerEdit().as_view(),
+                    name="customer-edit",
+                ),
+                path(
+                    "<int:pk>/delete/",
+                    project.customer_delete.as_view(),
+                    name="customer-delete",
+                ),
+            ],
+        ),
+        templates=M(
+            icon="file",
+            view=template.TemplateView().as_view(),
+            paths=[
+                path(
+                    "<int:pk>/", template.template_edit.as_view(), name="template-view"
+                ),
+                path(
+                    "<int:pk>/edit/",
+                    template.template_edit.as_view(),
+                    name="template-edit",
+                ),
+                path(
+                    "<int:pk>/delete/",
+                    template.template_delete.as_view(),
+                    name="template-delete",
                 ),
             ],
         ),

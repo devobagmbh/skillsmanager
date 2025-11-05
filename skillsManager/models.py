@@ -65,6 +65,9 @@ class Customer(models.Model):
     active_since = models.DateField(default=now)
     active_until = models.DateField(blank=True, null=True)
 
+    def get_absolute_url(self):
+        return reverse("customer-view", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name
 
@@ -129,3 +132,15 @@ class ProfileCertificateReference(models.Model):
             self.active_since,
             self.active_until,
         )
+
+
+class Template(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    template = models.TextField()
+
+    def get_absolute_url(self):
+        return reverse("template-view", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return self.name
