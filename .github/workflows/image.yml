@@ -41,7 +41,7 @@ jobs:
                 id: meta
                 uses: docker/metadata-action@v5.9.0
                 with:
-                    images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.flavour.name }}
+                    images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
                     tags: |
                         type=ref,event=branch
                         type=semver,pattern={{version}}
