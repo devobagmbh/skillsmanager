@@ -26,12 +26,36 @@ class ProfileMeta(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     birthday = models.DateField()
     photo = models.ImageField(blank=True, null=True)
+    available_from = models.DateField(blank=True, null=True)
+    job_title = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    maturity_level = models.PositiveSmallIntegerField(default=7)
+
+    @property
+    def maturity_level_percent(self, max=10):
+        return int(round(self.maturity_level / max * 100, 0))
 
     def __str__(self):
         return self.profile.__str__()
 
 
 auditlog.register(ProfileMeta)
+
+
+class Education(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+
+
+auditlog.register(Education)
+
+
+class Language(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    language = models.CharField(max_length=200)
+
+
+auditlog.register(Language)
 
 
 class Skill(models.Model):
@@ -90,6 +114,26 @@ class Project(models.Model):
 
     def __str__(self):
         return "%s/%s" % (self.customer.name, self.name)
+
+
+class ProfileProjectReference(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    active_since = models.DateField(default=now)
+    active_until = models.DateField(blank=True, null=True)
+    remarks = models.TextField(blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse(
+            "projectwork-view", kwargs={"profile_pk": self.profile.pk, "pk": self.pk}
+        )
+
+
+class ProfileProjectSkillReference(models.Model):
+    profile_project_reference = models.ForeignKey(
+        ProfileProjectReference, on_delete=models.CASCADE
+    )
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
 
 
 class ProjectLog(models.Model):

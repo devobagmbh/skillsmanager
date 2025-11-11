@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 
@@ -8,6 +9,10 @@ from ..models import (
     ProfileMeta,
     ProfileSkillReference,
     ProfileCertificateReference,
+    Language,
+    Education,
+    ProfileProjectReference,
+    ProfileProjectSkillReference,
 )
 from iommi import (
     EditColumn,
@@ -37,17 +42,42 @@ class ProfileEdit(Form):
             == 1
             else None
         ),
+        fields__maturity_level=range_field(1, 10, include=True),
         fields__profile=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
+    )
+    languages = EditTable(
+        title="Languages",
+        auto__model=Language,
+        rows=lambda pk, **_: Language.objects.filter(profile__pk=pk),
+        columns__profile__field=Field.non_rendered(
+            initial=lambda pk, **_: Profile.objects.get(pk=pk)
+        ),
+        columns__language__field__include=True,
+        columns__delete=EditColumn.delete(),
+        **{
+            "attrs__data-iommi-edit-table-delete-with": "checkbox",
+        }
+    )
+    education = EditTable(
+        title="Education",
+        auto__model=Education,
+        rows=lambda pk, **_: Education.objects.filter(profile__pk=pk),
+        columns__profile__field=Field.non_rendered(
+            initial=lambda pk, **_: Profile.objects.get(pk=pk)
+        ),
+        columns__name__field__include=True,
+        columns__delete=EditColumn.delete(),
+        **{
+            "attrs__data-iommi-edit-table-delete-with": "checkbox",
+        }
     )
     skills_hr = html.hr()
     skills = EditTable(
         title="Skills",
         auto__model=ProfileSkillReference,
-        rows=lambda pk, **_: ProfileSkillReference.objects.filter(
-            profile=Profile.objects.get(pk=pk)
-        ),
+        rows=lambda pk, **_: ProfileSkillReference.objects.filter(profile__pk=pk),
         columns__profile__field=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
@@ -63,9 +93,7 @@ class ProfileEdit(Form):
     certificates = EditTable(
         title="Certificates",
         auto__model=ProfileCertificateReference,
-        rows=lambda pk, **_: ProfileCertificateReference.objects.filter(
-            profile=Profile.objects.get(pk=pk)
-        ),
+        rows=lambda pk, **_: ProfileCertificateReference.objects.filter(profile__pk=pk),
         columns__profile__field=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
@@ -105,6 +133,13 @@ class ProfileView(Page):
                 mark_safe('<img src="%s" />' % (value)) if value != "" else ""
             ),
             cell__attrs__style={"max-width": "4em", "max-height": "4em"},
+        ),
+        columns__projectwork=Column.link(
+            attr=None,
+            cell__url=lambda row, **_: reverse_lazy(
+                "projectwork-list", kwargs=dict(profile_pk=row.pk)
+            ),
+            cell__value="Project work",
         ),
         columns__edit=Column.edit(),
         columns__delete=Column.delete(),

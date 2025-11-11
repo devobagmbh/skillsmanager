@@ -12,9 +12,7 @@ class VendorEdit(Form):
     certificates = EditTable(
         title="Certificates",
         auto__model=Certificate,
-        rows=lambda pk, **_: Certificate.objects.filter(
-            vendor=CertificateVendor.objects.get(pk=pk)
-        ),
+        rows=lambda pk, **_: Certificate.objects.filter(vendor__pk=pk),
         columns__vendor__field=Field.non_rendered(
             initial=lambda pk, **_: CertificateVendor.objects.get(pk=pk)
         ),

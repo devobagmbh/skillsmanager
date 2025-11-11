@@ -14,9 +14,7 @@ class CustomerEdit(Form):
     projects = EditTable(
         title="Projects",
         auto__model=Project,
-        rows=lambda pk, **_: Project.objects.filter(
-            customer=Customer.objects.get(pk=pk)
-        ),
+        rows=lambda pk, **_: Project.objects.filter(customer__pk=pk),
         columns__customer__field=Field.non_rendered(
             initial=lambda pk, **_: Customer.objects.get(pk=pk)
         ),
@@ -33,9 +31,7 @@ class CustomerEdit(Form):
     logs = EditTable(
         title="Customer logs",
         auto__model=CustomerLog,
-        rows=lambda pk, **_: CustomerLog.objects.filter(
-            customer=Customer.objects.get(pk=pk)
-        ),
+        rows=lambda pk, **_: CustomerLog.objects.filter(customer__pk=pk),
         columns__delete=EditColumn.delete(),
         columns__notice__field__include=True,
         **{
@@ -46,11 +42,10 @@ class CustomerEdit(Form):
         title="Project logs",
         auto__model=ProjectLog,
         page_size=10,
-        rows=lambda pk, **_: ProjectLog.objects.filter(
-            project__customer=Customer.objects.get(pk=pk)
-        ),
-        columns__timestamp__field__initial=now(),
+        rows=lambda pk, **_: ProjectLog.objects.filter(project__customer__pk=pk),
+        columns__timestamp__field__initial=lambda **_: now(),
         columns__notice__field__include=True,
+        # columns__project__filter__include=True,
     )
 
     class Meta:
