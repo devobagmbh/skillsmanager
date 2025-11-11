@@ -9,6 +9,7 @@ from .views import (
     home,
     project,
     template,
+    project_work,
 )
 from iommi.experimental.main_menu import MainMenu, M
 
@@ -40,6 +41,26 @@ menu_declaration = MainMenu(
                     "<int:pk>/delete/",
                     profile.profile_delete.as_view(),
                     name="profile-delete",
+                ),
+                path(
+                    "<int:profile_pk>/work/",
+                    project_work.ProjectWorkView().as_view(),
+                    name="projectwork-list",
+                ),
+                path(
+                    "<int:profile_pk>/work/<int:pk>/",
+                    project_work.ProjectWorkEdit().as_view(),
+                    name="projectwork-view",
+                ),
+                path(
+                    "<int:profile_pk>/work/<int:pk>/edit/",
+                    project_work.ProjectWorkEdit().as_view(),
+                    name="projectwork-edit",
+                ),
+                path(
+                    "<int:profile_pk>/work/<int:pk>/delete/",
+                    project_work.project_work_delete.as_view(),
+                    name="projectwork-delete",
                 ),
             ],
         ),

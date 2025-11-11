@@ -12,7 +12,7 @@ Management of skills, certificates and projects for consulting companies.
 
 Start the container with the [configured environment variables](#configuration) and expose the port 8000, e.g. with podman:
 
-    podman run --rm -it -e DEBUG=true -e DJANGO_SUPERUSER_USERNAME=app -e DJANGO_SUPERUSER_PASSWORD=admin -e DJANGO_SUPERUSER_EMAIL=admin@company.com -e SECRET_KEY=verysecret -P gchr.io/devobagmbh/skillsmanager:latest
+    podman run --rm -it -e DEBUG=true -e DJANGO_SUPERUSER_USERNAME=app -e DJANGO_SUPERUSER_PASSWORD=admin -e DJANGO_SUPERUSER_EMAIL=admin@company.com -e SECRET_KEY=verysecret -P ghcr.io/devobagmbh/skillsmanager:latest
 
 ## Python native
 
@@ -82,12 +82,6 @@ erDiagram
 		date active_until  "Person is available until"  
 	}
 
-	ProfileMeta {
-		ref profile FK "Reference to profile"  
-		date birthday  "Birthday of person"  
-		image photo  "Photo of person"  
-	}
-
 	Skill {
 		string name  "Skill name"  
 		text description  "Description of skill"  
@@ -154,6 +148,31 @@ erDiagram
 		text notice  "Notice about customer"  
 	}
 
+	ProfileMeta {
+		ref profile FK "Reference to profile"  
+		date birthday  "Birthday of person"  
+		image photo  "Photo of person"  
+		date available_from  "This person is available for projects from this date on"  
+		string job_title  "Job title of this person"  
+		text description  "Long description of this person"  
+		int maturity_level "Maturity level of the person"
+	}
+
+	Education {
+		ref profile FK "Referenced profile"  
+		string name  "Education title"  
+	}
+
+	Language {
+		ref profile  "Referenced profile"  
+		string language  "Language"  
+	}
+
+	ProfileProjectSkillReference {
+		ref profileProjectReference  "Reference to the profileProjectReference"  
+		ref skill  "Reference to the used skill"  
+	}
+
 	Profile||--||ProfileMeta:"contains private data"
 	Profile||--o{ProfileSkillReference:"has skill"
 	Skill||--o{ProfileSkillReference:"is linked to"
@@ -165,6 +184,9 @@ erDiagram
 	Profile||--o{ProfileProjectReference:"is engaged in"
 	Customer||--o{CustomerLog:"describes"
 	Project||--o{ProjectLog:"describes"
-
+	Profile||--o{Education:"  "
+	Profile}|--|{Language:"  "
+	ProfileProjectReference||--o{ProfileProjectSkillReference:"references used skills"
+	ProfileProjectSkillReference||--o{Skill:"references"
 
 ```
