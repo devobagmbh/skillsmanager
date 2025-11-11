@@ -1,0 +1,41 @@
+{{- if and .Values.persistence.database.enabled .Values.persistence.database.create }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "skillsmanager.fullname" . }}-database
+  labels:
+    {{- include "skillsmanager.labels" . | nindent 4 }}
+    {{- with .Values.persistence.database.labels }}
+    {{ . | toYaml | indent 4}}
+    {{- end }}
+  annotations:
+    {{ .Values.persistence.database.annotations | toYaml | indent 4}}
+spec:
+  accessModes:
+    {{- .Values.persistence.database.accessModes | toYaml | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.database.size }}
+{{- end }}
+
+---
+
+{{- if and .Values.persistence.uploads.enabled .Values.persistence.uploads.create }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "skillsmanager.fullname" . }}-uploads
+  labels:
+    {{- include "skillsmanager.labels" . | nindent 4 }}
+    {{- with .Values.persistence.uploads.labels }}
+    {{ . | toYaml | indent 4}}
+    {{- end }}
+  annotations:
+    {{ .Values.persistence.uploads.annotations | toYaml | indent 4}}
+spec:
+  accessModes:
+    {{- .Values.persistence.uploads.accessModes | toYaml | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.uploads.size }}
+{{- end }}
