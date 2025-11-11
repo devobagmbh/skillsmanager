@@ -1,0 +1,10 @@
+apiVersion: v2
+name: skillsmanager
+description: A Helm chart for deploying Skillsmanager
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: "https://github.com/devobagmbh/skillsmanager"
+sources:
+  - "https://github.com/devobagmbh/skillsmanager"
+icon: "https://github.com/devobagmbh/skillsmanager/blob/feature/dpr/firstversion/skillsManager/static/skillsManager/favicon.png?raw=true"

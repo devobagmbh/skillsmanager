@@ -1,0 +1,225 @@
+# Default values for skillsmanager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: ghcr.io/devobagmbh/skillsmanager
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 8000
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# -- Expose the service via gateway-api HTTPRoute
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+    - name: gateway
+      sectionName: http
+      # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+    - chart-example.local
+  # List of rules and filters applied.
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
+  #   filters:
+  #   - type: RequestHeaderModifier
+  #     requestHeaderModifier:
+  #       set:
+  #       - name: My-Overwrite-Header
+  #         value: this-is-the-only-value
+  #       remove:
+  #       - User-Agent
+  # - matches:
+  #   - path:
+  #       type: PathPrefix
+  #       value: /echo
+  #     headers:
+  #     - name: version
+  #       value: v2
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+additionalVolumes:
+  - name: foo
+    secret:
+      secretName: mysecret
+      optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+additionalVolumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configuration:
+  # -- Database URL secret reference if the integrated SQLite database is not used
+  databaseUrl:
+    # -- Name of the secret
+    secretName: ""
+    # -- Key inside the secret
+    secretKey: "databaseUrl"
+  # -- Secret reference for the django secret key
+  djangoSecretKey:
+    # -- Name of the secret
+    secretName: ""
+    # -- Key inside the secret
+    secretKey: "djangoSecretKey"
+  # -- Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true
+  applicationHost: ""
+  # -- Whether to run the application in Django debug mode
+  debug: false
+  # -- Configuration for Azure EntraID based login
+  azure:
+    # -- Enable Azure EntraID based login
+    enabled: false
+    # -- Azure client id
+    clientId: ""
+    # -- Azure client secret key secret reference
+    clientSecret:
+      # -- Name of the secret
+      secretName: ""
+      # -- Key inside the secret
+      secretKey: "azureClientSecret"
+    # Azure tenant id
+    tenantId: ""
+    # Whether to just accept the login (`none`) force to user to `login`, `consent` again or select an account (`select_account`)
+    prompt: "none"
+    # -- Role to Django group mapping in JSON form. e.g.:
+    # ```json
+    # {
+    #        "95170e67-2bbf-4e3e-a4d7-e7e5829fe7a7": "GroupName1", # mapped to one Django group
+    #        "3dc6539e-0589-4663-b782-fef100d839aa": ["GroupName2", "GroupName3"] # mapped to multiple Django groups
+    #}
+    #```
+    roles: {}
+
+# -- Persistence configuration
+persistence:
+  # -- Configures a volume used for the embedded SQLite database
+  database:
+    enabled: false
+    annotations: {}
+    labels: {}
+    accessModes:
+      - ReadWriteOnce
+    storageClass: ""
+    size: 10Gi
+
+  # -- Configures a volume used for uploads in SkillsManager
+  uploads:
+    enabled: false
+    annotations: {}
+    labels: {}
+    accessModes:
+      - ReadWriteOnce
+    storageClass: ""
+    size: 10Gi
