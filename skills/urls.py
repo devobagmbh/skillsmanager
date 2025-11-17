@@ -26,12 +26,14 @@ urlpatterns = [
     path("", include("skillsManager.urls")),
     path("", RedirectView.as_view(url="/home")),
     path("media/<str:file_path>", media, name="media"),
-    (
+]
+
+if os.environ.get("AZURE_ENABLED", "false").lower() == "true":
+    urlpatterns.append(
         path(
             "azure_auth/",
             include("azure_auth.urls"),
         )
-        if os.environ.get("AZURE_ENABLED", "false").lower() == "true"
-        else path("accounts/", include("django.contrib.auth.urls"))
-    ),
-]
+    )
+else:
+    urlpatterns.append(path("accounts/", include("django.contrib.auth.urls")))
