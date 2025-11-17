@@ -173,6 +173,17 @@ configuration:
     secretName: ""
     # -- Key inside the secret
     secretKey: "djangoSecretKey"
+  djangoSuperUser:
+    # -- Username of the Django superuser
+    username: "admin"
+    # -- Email of the Django superuser
+    email: ""
+    # -- Secret reference for the django superuser password
+    password:
+      # -- Name of the secret
+      secretName: ""
+      # -- Key inside the secret
+      secretKey: "djangoSuperUserPassword"
   # -- Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true
   applicationHost: ""
   # -- Whether to run the application in Django debug mode
@@ -189,9 +200,9 @@ configuration:
       secretName: ""
       # -- Key inside the secret
       secretKey: "azureClientSecret"
-    # Azure tenant id
+    # -- Azure tenant id
     tenantId: ""
-    # Whether to just accept the login (`none`) force to user to `login`, `consent` again or select an account (`select_account`)
+    # -- Whether to just accept the login (`none`) force to user to `login`, `consent` again or select an account (`select_account`)
     prompt: "none"
     # -- Role to Django group mapping in JSON form. e.g.:
     # ```json
