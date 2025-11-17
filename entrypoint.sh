@@ -24,7 +24,11 @@ then
         exit 1
     fi
 
-    python manage.py createsuperuser --noinput
+    if python manage.py createsuperuser --noinput
+    then
+        touch .superuser_created
+    fi
+    
 fi
 
 daphne -b 0.0.0.0 -p 8000 skills.asgi:application
