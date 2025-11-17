@@ -1,4 +1,4 @@
-{{- if and .Values.persistence.database.enabled .Values.persistence.database.create }}
+{{- if .Values.persistence.database.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -20,7 +20,7 @@ spec:
 
 ---
 
-{{- if and .Values.persistence.uploads.enabled .Values.persistence.uploads.create }}
+{{- if .Values.persistence.uploads.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:

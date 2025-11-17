@@ -77,20 +77,29 @@ spec:
             {{- end }}
             - name: DEBUG
               value: "{{.Values.configuration.debug}}"
-            {{- with .Values.configuration.azure.enabled }}
+            - name: DJANGO_SUPERUSER_USERNAME
+              value: {{.Values.configuration.djangoSuperUser.username}}
+            - name: DJANGO_SUPERUSER_EMAIL
+              value: {{.Values.configuration.djangoSuperUser.email}}
+            - name: DJANGO_SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.configuration.djangoSuperUser.password.secretName}}
+                  key: {{.Values.configuration.djangoSuperUser.password.secretKey}}
+            {{- if .Values.configuration.azure.enabled }}
             - name: AZURE_ENBALED
               value: "true"
             - name: AZURE_CLIENT_ID
-              value: {{.Values.configuration.azure.clientId}}
+              value: {{.Values.configuration.azure.clientId | quote}}
             - name: AZURE_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{.Values.configuration.azure.clientSecret.secretName}}
-                  key: {{.Values.configuration.azure.clientSecret.secretKey}}
+                  name: {{.Values.configuration.azure.clientSecret.secretName | quote}}
+                  key: {{.Values.configuration.azure.clientSecret.secretKey | quote}}
             - name: AZURE_TENANT_ID
-              value: {{.Values.configuration.azure.tenantId}}
+              value: {{.Values.configuration.azure.tenantId | quote}}
             - name: AZURE_PROMPT
-              value: {{.Values.configuration.azure.prompt}}
+              value: {{.Values.configuration.azure.prompt | quote}}
             {{- with .Values.configuration.azure.roles}}
             - name: AZURE_ROLES
               value: {{. | toJson | quote}}

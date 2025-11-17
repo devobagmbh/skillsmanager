@@ -30,7 +30,9 @@ A Helm chart for deploying Skillsmanager
 | configuration.azure.clientSecret.secretKey | string | `"azureClientSecret"` | Key inside the secret |
 | configuration.azure.clientSecret.secretName | string | `""` | Name of the secret |
 | configuration.azure.enabled | bool | `false` | Enable Azure EntraID based login |
+| configuration.azure.prompt | string | `"none"` | Whether to just accept the login (`none`) force to user to `login`, `consent` again or select an account (`select_account`) |
 | configuration.azure.roles | object | `{}` | Role to Django group mapping in JSON form. e.g.: ```json {        "95170e67-2bbf-4e3e-a4d7-e7e5829fe7a7": "GroupName1", # mapped to one Django group        "3dc6539e-0589-4663-b782-fef100d839aa": ["GroupName2", "GroupName3"] # mapped to multiple Django groups } ``` |
+| configuration.azure.tenantId | string | `""` | Azure tenant id |
 | configuration.databaseUrl | object | `{"secretKey":"databaseUrl","secretName":""}` | Database URL secret reference if the integrated SQLite database is not used |
 | configuration.databaseUrl.secretKey | string | `"databaseUrl"` | Key inside the secret |
 | configuration.databaseUrl.secretName | string | `""` | Name of the secret |
@@ -38,6 +40,11 @@ A Helm chart for deploying Skillsmanager
 | configuration.djangoSecretKey | object | `{"secretKey":"djangoSecretKey","secretName":""}` | Secret reference for the django secret key |
 | configuration.djangoSecretKey.secretKey | string | `"djangoSecretKey"` | Key inside the secret |
 | configuration.djangoSecretKey.secretName | string | `""` | Name of the secret |
+| configuration.djangoSuperUser.email | string | `""` | Email of the Django superuser |
+| configuration.djangoSuperUser.password | object | `{"secretKey":"djangoSuperUserPassword","secretName":""}` | Secret reference for the django superuser password |
+| configuration.djangoSuperUser.password.secretKey | string | `"djangoSuperUserPassword"` | Key inside the secret |
+| configuration.djangoSuperUser.password.secretName | string | `""` | Name of the secret |
+| configuration.djangoSuperUser.username | string | `"admin"` | Username of the Django superuser |
 | fullnameOverride | string | `""` |  |
 | httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/headers"}}]}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
