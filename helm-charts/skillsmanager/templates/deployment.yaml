@@ -59,35 +59,33 @@ spec:
           env:
             - name: DATABASE_URL
             {{- if .Values.persistence.database.enabled }}
-              value: sqlite:///app/db/db.sqlite3
+              value: sqlite:////app/db/db.sqlite3
             {{- else }}
               valueFrom:
                 secretKeyRef:
-                  name: {{.Values.configuration.databaseUrl.secretName}}
-                  key: {{.Values.configuration.databaseUrl.secretKey}}
+                  name: {{.Values.configuration.databaseUrl.secretName | quote}}
+                  key: {{.Values.configuration.databaseUrl.secretKey | quote}}
             {{- end }}
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{.Values.configuration.djangoSecretKey.secretName}}
-                  key: {{.Values.configuration.djangoSecretKey.secretKey}}
-            {{- with .Values.configuration.applicationHost }}
+                  name: {{.Values.configuration.djangoSecretKey.secretName | quote}}
+                  key: {{.Values.configuration.djangoSecretKey.secretKey | quote}}
             - name: APPLICATION_HOST
-              value: {{.}}
-            {{- end }}
+              value: '*'
             - name: DEBUG
               value: "{{.Values.configuration.debug}}"
             - name: DJANGO_SUPERUSER_USERNAME
-              value: {{.Values.configuration.djangoSuperUser.username}}
+              value: {{.Values.configuration.djangoSuperUser.username | quote}}
             - name: DJANGO_SUPERUSER_EMAIL
-              value: {{.Values.configuration.djangoSuperUser.email}}
+              value: {{.Values.configuration.djangoSuperUser.email | quote}}
             - name: DJANGO_SUPERUSER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{.Values.configuration.djangoSuperUser.password.secretName}}
-                  key: {{.Values.configuration.djangoSuperUser.password.secretKey}}
+                  name: {{.Values.configuration.djangoSuperUser.password.secretName | quote}}
+                  key: {{.Values.configuration.djangoSuperUser.password.secretKey | quote}}
             {{- if .Values.configuration.azure.enabled }}
-            - name: AZURE_ENBALED
+            - name: AZURE_ENABLED
               value: "true"
             - name: AZURE_CLIENT_ID
               value: {{.Values.configuration.azure.clientId | quote}}

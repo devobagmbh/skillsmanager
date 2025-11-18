@@ -23,7 +23,6 @@ A Helm chart for deploying Skillsmanager
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| configuration.applicationHost | string | `""` | Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true |
 | configuration.azure | object | `{"clientId":"","clientSecret":{"secretKey":"azureClientSecret","secretName":""},"enabled":false,"prompt":"none","roles":{},"tenantId":""}` | Configuration for Azure EntraID based login |
 | configuration.azure.clientId | string | `""` | Azure client id |
 | configuration.azure.clientSecret | object | `{"secretKey":"azureClientSecret","secretName":""}` | Azure client secret key secret reference |
@@ -67,12 +66,15 @@ A Helm chart for deploying Skillsmanager
 | persistence.uploads | object | `{"accessModes":["ReadWriteOnce"],"annotations":{},"enabled":false,"labels":{},"size":"10Gi","storageClass":""}` | Configures a volume used for uploads in SkillsManager |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
+| podSecurityContext.fsGroup | int | `1000` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
-| securityContext | object | `{}` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `1000` |  |
 | service.port | int | `8000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
