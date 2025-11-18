@@ -24,7 +24,7 @@ auditlog.register(Profile)
 
 class ProfileMeta(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    birthday = models.DateField()
+    birthday = models.DateField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
     available_from = models.DateField(blank=True, null=True)
     job_title = models.CharField(max_length=200, blank=True, null=True)
