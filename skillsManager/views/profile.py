@@ -147,7 +147,6 @@ class ProfileView(Page):
     new_profile = Form.create(
         title="New profile",
         auto__model=Profile,
-        include=lambda user, **_: user.is_staff,
         extra__redirect=lambda form, **_: redirect("profile-edit", pk=form.instance.pk),
     )
 

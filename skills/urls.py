@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.urls import path, include
 from django.views.generic import RedirectView
+from iommi.views import auth_views
 
 
 def media(request, file_path=None):
@@ -29,11 +30,6 @@ urlpatterns = [
 ]
 
 if os.environ.get("AZURE_ENABLED", "false").lower() == "true":
-    urlpatterns.append(
-        path(
-            "azure_auth/",
-            include("azure_auth.urls"),
-        )
-    )
+    urlpatterns.append(path("", include("azure_auth.urls")))
 else:
-    urlpatterns.append(path("accounts/", include("django.contrib.auth.urls")))
+    urlpatterns.append(path("", auth_views()))
