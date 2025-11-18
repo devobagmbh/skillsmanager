@@ -71,7 +71,7 @@ MIDDLEWARE = [
 ] + (
     ["azure_auth.middleware.AzureMiddleware"]
     if os.environ.get("AZURE_ENABLED", "false").lower() == "true"
-    else ["django.contrib.auth.middleware.LoginRequiredMiddleware"]
+    else ["skillsManager.middleware.auth.AuthMiddleware"]
 )
 
 ROOT_URLCONF = "skills.urls"
@@ -169,7 +169,7 @@ if os.environ.get("AZURE_ROLES", "") != "":
 LOGIN_URL = (
     "/azure_auth/login"
     if os.environ.get("AZURE_ENABLED", "false").lower() == "true"
-    else "/accounts/login/"
+    else "/login/"
 )
 LOGIN_REDIRECT_URL = "/"  # Or any other endpoint
 
