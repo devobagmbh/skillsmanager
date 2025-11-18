@@ -38,16 +38,16 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
@@ -184,8 +184,6 @@ configuration:
       secretName: ""
       # -- Key inside the secret
       secretKey: "djangoSuperUserPassword"
-  # -- Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true
-  applicationHost: ""
   # -- Whether to run the application in Django debug mode
   debug: false
   # -- Configuration for Azure EntraID based login
