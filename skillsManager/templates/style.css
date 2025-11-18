@@ -33,3 +33,7 @@
 	position: absolute;
 	top: 15em;
 }
+
+div[data-iommi-path="fields__edit_meta__fields__photo"] img {
+	max-width: 150px;
+}

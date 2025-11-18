@@ -42,6 +42,7 @@ class ProfileEdit(Form):
             == 1
             else None
         ),
+        fields__description__input__attrs__rows=10,
         fields__maturity_level=range_field(1, 10, include=True),
         fields__profile=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
