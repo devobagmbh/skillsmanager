@@ -37,3 +37,7 @@
 div[data-iommi-path="fields__edit_meta__fields__photo"] img {
 	max-width: 150px;
 }
+
+th[data-iommi-path="fields__skills__columns__skill__header"] {
+    min-width: 20em;
+}

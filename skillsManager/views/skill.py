@@ -7,6 +7,8 @@ class SkillView(Page):
     skills_table = Table(
         auto__model=Skill,
         page_size=10,
+        columns__name__filter__include=True,
+        columns__description__filter__include=True,
         columns__edit=Column.edit(),
         columns__delete=Column.delete(),
     )
