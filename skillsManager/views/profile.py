@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 
-from ..widgets import range_field
+from ..widgets import range_field, range_field_helper
 from ..models import (
     Profile,
     ProfileMeta,
@@ -59,7 +59,7 @@ class ProfileEdit(Form):
         columns__delete=EditColumn.delete(),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        }
+        },
     )
     education = EditTable(
         title="Education",
@@ -72,7 +72,7 @@ class ProfileEdit(Form):
         columns__delete=EditColumn.delete(),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        }
+        },
     )
     skills_hr = html.hr()
     skills = EditTable(
@@ -86,9 +86,10 @@ class ProfileEdit(Form):
         columns__favorite__field=range_field(1, 10, include=True),
         columns__remarks__field__include=True,
         columns__delete=EditColumn.delete(),
+        outer__children__rangehelper=range_field_helper(),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        }
+        },
     )
     certificates_hr = html.hr()
     certificates = EditTable(
@@ -104,7 +105,7 @@ class ProfileEdit(Form):
         columns__delete=EditColumn.delete(),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        }
+        },
     )
 
     class Meta:
