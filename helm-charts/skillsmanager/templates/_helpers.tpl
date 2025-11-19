@@ -64,9 +64,12 @@ Create the name of the service account to use
 {{/*
 Combine the persistence volumes with the additional volumes
 */}}
-{{- define "skillsmanager.volumes" -}}
-{{- if or (or .Values.persistence.database.enabled .Values.persistence.uploads.enabled) .Values.additionalVolumes }}
+{{- define "skillsmanager.volumes" }}
 volumes:
+  - name: temporary
+    emptyDir:
+      sizeLimit: 1Gi
+{{- if or (or .Values.persistence.database.enabled .Values.persistence.uploads.enabled) .Values.additionalVolumes }}
 {{- if .Values.persistence.database.enabled }}
   - name: database
     persistentVolumeClaim:
@@ -86,9 +89,11 @@ volumes:
 {{/*
 Combine the persistence volume mounts with the additional volume mounts
 */}}
-{{- define "skillsmanager.volumeMounts" -}}
-{{- if or (or .Values.persistence.database.enabled .Values.persistence.uploads.enabled) .Values.additionalVolumeMounts }}
+{{- define "skillsmanager.volumeMounts" }}
 volumeMounts:
+  - name: temporary
+    mountPath: /tmp
+{{- if or (or .Values.persistence.database.enabled .Values.persistence.uploads.enabled) .Values.additionalVolumeMounts }}
 {{- if .Values.persistence.database.enabled }}
   - name: database
     mountPath: /app/db
