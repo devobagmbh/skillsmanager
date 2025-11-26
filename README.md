@@ -142,6 +142,7 @@ erDiagram
 
 	Customer {
 		string name  "Name of the customer"  
+		string industry "Industry the customer is in"
 		text description "Description of the customer"
 		ref parent_customer FK "Parent customer"  
 		date active_since  "Active customer since"  

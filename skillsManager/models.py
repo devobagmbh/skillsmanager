@@ -83,6 +83,7 @@ class ProfileSkillReference(models.Model):
 
 class Customer(models.Model):
     name = models.CharField(max_length=200)
+    industry = models.CharField(max_length=200, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     parent_customer = models.ForeignKey(
         "self", blank=True, null=True, on_delete=models.SET_NULL
