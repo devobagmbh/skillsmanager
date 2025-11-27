@@ -1,8 +1,8 @@
 from django.utils.timezone import now
-
 from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table
-from skillsManager.models import Project, ProjectLog, Customer, CustomerLog
 from iommi.form import save_nested_forms
+
+from skillsManager.models import Project, ProjectLog, Customer, CustomerLog
 
 
 class CustomerEdit(Form):
@@ -22,7 +22,7 @@ class CustomerEdit(Form):
         columns__name__field__include=True,
         columns__description__field__include=True,
         columns__active_since__field__include=True,
-        columns__active_since__field__initial=now(),
+        columns__active_since__field__initial=lambda instance, **_: instance.active_since if instance else now(),
         columns__active_until__field__include=True,
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
@@ -43,7 +43,7 @@ class CustomerEdit(Form):
         auto__model=ProjectLog,
         page_size=10,
         rows=lambda pk, **_: ProjectLog.objects.filter(project__customer__pk=pk),
-        columns__timestamp__field__initial=lambda **_: now(),
+        columns__timestamp__field__initial=lambda instance, **_: instance.timestamp if instance else now(),
         columns__notice__field__include=True,
         # columns__project__filter__include=True,
     )

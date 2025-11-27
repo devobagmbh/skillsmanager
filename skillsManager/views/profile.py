@@ -1,19 +1,7 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.safestring import mark_safe
-from django.utils.timezone import now
-
-from ..widgets import range_field, range_field_helper
-from ..models import (
-    Profile,
-    ProfileMeta,
-    ProfileSkillReference,
-    ProfileCertificateReference,
-    Language,
-    Education,
-    ProfileProjectReference,
-    ProfileProjectSkillReference,
-)
 from iommi import (
     EditColumn,
     EditTable,
@@ -22,9 +10,19 @@ from iommi import (
     Table,
     Column,
     Page,
-    html,
+    html, Action,
 )
 from iommi.form import save_nested_forms
+
+from ..models import (
+    Profile,
+    ProfileMeta,
+    ProfileSkillReference,
+    ProfileCertificateReference,
+    Language,
+    Education,
+)
+from ..widgets import range_field, range_field_helper
 
 
 class ProfileEdit(Form):
@@ -39,7 +37,7 @@ class ProfileEdit(Form):
         instance=lambda pk, **_: (
             ProfileMeta.objects.get(profile=Profile.objects.get(pk=pk))
             if ProfileMeta.objects.filter(profile=Profile.objects.get(pk=pk)).count()
-            == 1
+               == 1
             else None
         ),
         fields__description__input__attrs__rows=10,
@@ -91,22 +89,6 @@ class ProfileEdit(Form):
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
         },
     )
-    certificates_hr = html.hr()
-    certificates = EditTable(
-        title="Certificates",
-        auto__model=ProfileCertificateReference,
-        rows=lambda pk, **_: ProfileCertificateReference.objects.filter(profile__pk=pk),
-        columns__profile__field=Field.non_rendered(
-            initial=lambda pk, **_: Profile.objects.get(pk=pk)
-        ),
-        columns__active_since__field__include=True,
-        columns__active_since__field__initial=now(),
-        columns__active_until__field__include=True,
-        columns__delete=EditColumn.delete(),
-        **{
-            "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        },
-    )
 
     class Meta:
         actions__submit__post_handler = save_nested_forms
@@ -128,13 +110,20 @@ class ProfileView(Page):
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).photo.url
                 if ProfileMeta.objects.filter(profile=row).count() == 1
-                and ProfileMeta.objects.get(profile=row).photo.name != ""
+                   and ProfileMeta.objects.get(profile=row).photo.name != ""
                 else ""
             ),
             cell__format=lambda value, **_: (
                 mark_safe('<img src="%s" />' % (value)) if value != "" else ""
             ),
             cell__attrs__style={"max-width": "4em", "max-height": "4em"},
+        ),
+        columns__certificates=Column.link(
+            attr=None,
+            cell__url=lambda row, **_: reverse_lazy(
+                "profilecertificates-list", kwargs=dict(profile_pk=row.pk)
+            ),
+            cell__value="Certificates",
         ),
         columns__projectwork=Column.link(
             attr=None,
@@ -155,4 +144,64 @@ class ProfileView(Page):
 
 profile_delete = Form.delete(
     instance=lambda pk, **_: Profile.objects.get(pk=pk),
+)
+
+
+def delete_certificate_file(instance, **kwargs):
+    instance.file = None
+    instance.save()
+    return HttpResponseRedirect(instance.get_absolute_url())
+
+
+def download_certificate(instance, **kwargs):
+    return HttpResponseRedirect(instance.file.url)
+
+
+class ProfileCertificateEdit(Page):
+    certificate = Form.edit(
+        title="Edit certificate",
+        auto__model=ProfileCertificateReference,
+        instance=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk),
+        actions__download=Action.submit(
+            display_name="Download certificate",
+            post_handler=download_certificate,
+            include=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk).file,
+        ),
+        actions__clear=Action.submit(
+            display_name="Delete certificate file",
+            post_handler=delete_certificate_file,
+            include=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk).file,
+        ),
+        extra__redirect=lambda profile_pk, **_: redirect(
+            reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk})),
+    )
+
+
+class ProfileCertificateView(Page):
+    certificates = Table(
+        auto__model=ProfileCertificateReference,
+        page_size=10,
+        rows=lambda profile_pk, **_: ProfileCertificateReference.objects.filter(profile_id=profile_pk),
+        columns__file=Column(
+            cell__value=lambda row, **_: row.file.url if row.file else "",
+            cell__format=lambda value, **_: (
+                mark_safe('<a href="%s">Download</a>' % value) if value != "" else ""
+            ),
+        ),
+        columns__edit=Column.edit(),
+        columns__delete=Column.delete(),
+    )
+
+    new_certificate = Form.create(
+        title="New certificate",
+        auto__model=ProfileCertificateReference,
+        extra__redirect_to=".",
+        fields__profile=Field.non_rendered(
+            initial=lambda profile_pk, **_: Profile.objects.get(pk=profile_pk)
+        ),
+    )
+
+
+profile_certificate_delete = Form.delete(
+    instance=lambda profile_pk, pk, **_: ProfileCertificateReference.objects.get(profile_id=profile_pk, pk=pk)
 )
