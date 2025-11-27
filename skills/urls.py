@@ -1,4 +1,5 @@
 import os
+
 from django.contrib import admin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.urls import path, include
@@ -26,7 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("skillsManager.urls")),
     path("", RedirectView.as_view(url="/home")),
-    path("media/<str:file_path>", media, name="media"),
+    path("media/<path:file_path>", media, name="media"),
 ]
 
 if os.environ.get("AZURE_ENABLED", "false").lower() == "true":

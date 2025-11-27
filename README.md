@@ -137,7 +137,8 @@ erDiagram
 		ref profile FK "Referenced profile"  
 		ref certificate  "Referenced certificate"  
 		date active_since  "Certificate is assigned to person since"  
-		date active_until  "Certificationis valid until this date"  
+		date active_until  "Certification is valid until this date"  
+		file file "Certificate file"
 	}
 
 	Customer {

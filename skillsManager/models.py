@@ -1,8 +1,7 @@
-from django.db import models
-from django.utils.timezone import now
-from django.contrib.auth.models import User
-from django.urls import reverse
 from auditlog.registry import auditlog
+from django.db import models
+from django.urls import reverse
+from django.utils.timezone import now
 
 
 class Profile(models.Model):
@@ -166,11 +165,18 @@ class Certificate(models.Model):
         return "%s (%s)" % (self.name, self.vendor)
 
 
+def generate_certificate_filename(instance, filename):
+    return "certificates/%s.%s/%s-%s" % (
+        instance.profile.given_name, instance.profile.last_name, instance.certificate.name, filename
+    )
+
+
 class ProfileCertificateReference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     certificate = models.ForeignKey(Certificate, on_delete=models.CASCADE)
     active_since = models.DateField(default=now)
     active_until = models.DateField(blank=True, null=True)
+    file = models.FileField(blank=True, null=True, upload_to=generate_certificate_filename)
 
     def __str__(self):
         return "%s %s-%s" % (
@@ -178,6 +184,9 @@ class ProfileCertificateReference(models.Model):
             self.active_since,
             self.active_until,
         )
+
+    def get_absolute_url(self):
+        return reverse("profilecertificates-view", kwargs={"profile_pk": self.profile.pk, "pk": self.pk})
 
 
 class Template(models.Model):

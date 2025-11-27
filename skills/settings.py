@@ -16,10 +16,12 @@ from pathlib import Path
 
 import dj_database_url
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -38,41 +40,41 @@ ALLOWED_HOSTS = [os.environ.get("APPLICATION_HOST")]
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "skillsManager",
-    "auditlog",
-    "django_fastdev",
-    "markdownify.apps.MarkdownifyConfig",
-    "iommi",
-] + (
-    ["azure_auth"] if os.environ.get("AZURE_ENABLED", "false").lower() == "true" else []
-)
+                     "django.contrib.admin",
+                     "django.contrib.auth",
+                     "django.contrib.contenttypes",
+                     "django.contrib.sessions",
+                     "django.contrib.messages",
+                     "django.contrib.staticfiles",
+                     "skillsManager",
+                     "auditlog",
+                     "django_fastdev",
+                     "markdownify.apps.MarkdownifyConfig",
+                     "iommi",
+                 ] + (
+                     ["azure_auth"] if os.environ.get("AZURE_ENABLED", "false").lower() == "true" else []
+                 )
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "auditlog.middleware.AuditlogMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "iommi.live_edit.Middleware",
-    "iommi.sql_trace.Middleware",
-    "iommi.profiling.Middleware",
-    "iommi.experimental.main_menu.main_menu_middleware",
-    "iommi.middleware",
-] + (
-    ["azure_auth.middleware.AzureMiddleware"]
-    if os.environ.get("AZURE_ENABLED", "false").lower() == "true"
-    else ["skillsManager.middleware.auth.AuthMiddleware"]
-)
+                 "django.middleware.security.SecurityMiddleware",
+                 "django.contrib.sessions.middleware.SessionMiddleware",
+                 "django.middleware.common.CommonMiddleware",
+                 "django.middleware.csrf.CsrfViewMiddleware",
+                 "django.contrib.auth.middleware.AuthenticationMiddleware",
+                 "django.contrib.messages.middleware.MessageMiddleware",
+                 "django.middleware.clickjacking.XFrameOptionsMiddleware",
+                 "auditlog.middleware.AuditlogMiddleware",
+                 "whitenoise.middleware.WhiteNoiseMiddleware",
+                 "iommi.live_edit.Middleware",
+                 "iommi.sql_trace.Middleware",
+                 "iommi.profiling.Middleware",
+                 "iommi.experimental.main_menu.main_menu_middleware",
+                 "iommi.middleware",
+             ] + (
+                 ["azure_auth.middleware.AzureMiddleware"]
+                 if os.environ.get("AZURE_ENABLED", "false").lower() == "true"
+                 else ["skillsManager.middleware.auth.AuthMiddleware"]
+             )
 
 ROOT_URLCONF = "skills.urls"
 
@@ -94,7 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "skills.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -105,7 +106,6 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -125,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -136,7 +135,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -150,7 +148,6 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 AZURE_AUTH = {
     "CLIENT_ID": os.environ.get("AZURE_CLIENT_ID", ""),
     "CLIENT_SECRET": os.environ.get("AZURE_CLIENT_SECRET", ""),
@@ -158,7 +155,7 @@ AZURE_AUTH = {
     "SCOPES": ["User.Read"],
     "PROMPT": os.environ.get("AZURE_PROMPT", "none"),
     "AUTHORITY": "https://login.microsoftonline.com/%s"
-    % (os.environ.get("AZURE_TENANT_ID", "")),
+                 % (os.environ.get("AZURE_TENANT_ID", "")),
     "USERNAME_ATTRIBUTE": "mail",
     "GROUP_ATTRIBUTE": "roles",
 }
