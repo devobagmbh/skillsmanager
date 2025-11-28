@@ -68,7 +68,7 @@ MIDDLEWARE = [
                  "iommi.live_edit.Middleware",
                  "iommi.sql_trace.Middleware",
                  "iommi.profiling.Middleware",
-                 "iommi.experimental.main_menu.main_menu_middleware",
+                 "iommi.main_menu.main_menu_middleware",
                  "iommi.middleware",
              ] + (
                  ["azure_auth.middleware.AzureMiddleware"]

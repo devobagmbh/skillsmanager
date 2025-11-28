@@ -41,3 +41,25 @@ div[data-iommi-path="fields__edit_meta__fields__photo"] img {
 th[data-iommi-path="fields__skills__columns__skill__header"] {
     min-width: 20em;
 }
+
+.grid-container {
+    padding-top: 2em;
+}
+
+button[data-open="new-skill-modal"] {
+    margin-top: 1.6em;
+    margin-left: 1em;
+    padding: .5em;
+    border-radius: 30%;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+div[data-iommi-path="parts__new_skill_reference__fields__skill"] {
+    width: 95%;
+    float: left;
+}
+
+div#new-skill-modal span.select2 {
+    width: 100% !important;
+}

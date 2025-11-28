@@ -1,4 +1,5 @@
-from iommi import Column, Form, Page, Table
+from django.urls import reverse
+from iommi import Column, Form, Page, Table, html
 
 from skillsManager.models import Template
 
@@ -19,10 +20,19 @@ class TemplateView(Page):
     )
 
 
-template_edit = Form.edit(
-    auto__model=Template,
-    instance=lambda pk, **_: Template.objects.get(pk=pk),
-    fields__template__input__attrs__style__height="40em",
-)
+class TemplateEdit(Page):
+    back = html.div(
+        children__backlink=html.a(
+            "← Back to templates",
+            attrs__href=lambda **_: reverse("main_menu.templates"),
+        )
+    )
+    back_hr = html.br(attrs__clear="all")
+    template_edit = Form.edit(
+        auto__model=Template,
+        instance=lambda pk, **_: Template.objects.get(pk=pk),
+        fields__template__input__attrs__style__height="40em",
+    )
+
 
 template_delete = Form.delete(instance=lambda pk, **_: Template.objects.get(pk=pk))

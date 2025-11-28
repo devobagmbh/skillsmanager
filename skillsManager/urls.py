@@ -1,18 +1,17 @@
 import os
 
 from django.urls import path
-from iommi.experimental.main_menu import MainMenu, M, EXTERNAL
+from iommi.main_menu import MainMenu, M, EXTERNAL
 
 from .views import (
     cv,
     profile,
     skill,
-    certificate,
     skill_search,
     home,
     project,
     template,
-    project_work,
+    certificate,
 )
 
 menu_declaration = MainMenu(
@@ -51,43 +50,63 @@ menu_declaration = MainMenu(
                         ),
                         path(
                             "<int:profile_pk>/work/",
-                            project_work.ProjectWorkView().as_view(),
+                            profile.project_work.ProjectWorkView().as_view(),
                             name="projectwork-list",
                         ),
                         path(
                             "<int:profile_pk>/work/<int:pk>/",
-                            project_work.ProjectWorkEdit().as_view(),
+                            profile.project_work.ProjectWorkEdit().as_view(),
                             name="projectwork-view",
                         ),
                         path(
                             "<int:profile_pk>/work/<int:pk>/edit/",
-                            project_work.ProjectWorkEdit().as_view(),
+                            profile.project_work.ProjectWorkEdit().as_view(),
                             name="projectwork-edit",
                         ),
                         path(
                             "<int:profile_pk>/work/<int:pk>/delete/",
-                            project_work.project_work_delete.as_view(),
+                            profile.project_work.project_work_delete.as_view(),
                             name="projectwork-delete",
                         ),
                         path(
                             "<int:profile_pk>/certificates/",
-                            profile.ProfileCertificateView().as_view(),
+                            profile.certificate.ProfileCertificateView().as_view(),
                             name="profilecertificates-list",
                         ),
                         path(
                             "<int:profile_pk>/certificates/<int:pk>/",
-                            profile.ProfileCertificateEdit().as_view(),
+                            profile.certificate.ProfileCertificateEdit().as_view(),
                             name="profilecertificates-view",
                         ),
                         path(
                             "<int:profile_pk>/certificates/<int:pk>/edit/",
-                            profile.ProfileCertificateEdit().as_view(),
+                            profile.certificate.ProfileCertificateEdit().as_view(),
                             name="profilecertificates-edit",
                         ),
                         path(
                             "<int:profile_pk>/certificates/<int:pk>/delete/",
-                            profile.profile_certificate_delete.as_view(),
+                            profile.certificate.profile_certificate_delete.as_view(),
                             name="profilecertificates-delete",
+                        ),
+                        path(
+                            "<int:profile_pk>/skills/",
+                            profile.skill.ProfileSkillView().as_view(),
+                            name="profileskills-list",
+                        ),
+                        path(
+                            "<int:profile_pk>/skills/<int:pk>/",
+                            profile.skill.ProfileSkillEdit().as_view(),
+                            name="profileskills-view",
+                        ),
+                        path(
+                            "<int:profile_pk>/skills/<int:pk>/edit/",
+                            profile.skill.ProfileSkillEdit().as_view(),
+                            name="profileskills-edit",
+                        ),
+                        path(
+                            "<int:profile_pk>/skills/<int:pk>/delete/",
+                            profile.skill.profile_skill_delete.as_view(),
+                            name="profileskills-delete",
                         ),
                     ],
                 ),
@@ -95,10 +114,10 @@ menu_declaration = MainMenu(
                     icon="check",
                     view=skill.SkillView().as_view(),
                     paths=[
-                        path("<int:pk>/", skill.skill_edit.as_view(), name="skill-view"),
+                        path("<int:pk>/", skill.SkillEdit().as_view(), name="skill-view"),
                         path(
                             "<int:pk>/edit/",
-                            skill.skill_edit.as_view(),
+                            skill.SkillEdit().as_view(),
                             name="skill-edit",
                         ),
                         path(
@@ -156,12 +175,12 @@ menu_declaration = MainMenu(
                     paths=[
                         path(
                             "<int:pk>/",
-                            template.template_edit.as_view(),
+                            template.TemplateEdit().as_view(),
                             name="template-view",
                         ),
                         path(
                             "<int:pk>/edit/",
-                            template.template_edit.as_view(),
+                            template.TemplateEdit().as_view(),
                             name="template-edit",
                         ),
                         path(

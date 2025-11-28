@@ -1,4 +1,5 @@
-from iommi import Column, Field, Form, Page, Table
+from django.urls import reverse
+from iommi import Column, Field, Form, Page, Table, html
 
 from skillsManager.models import (
     Profile,
@@ -9,6 +10,13 @@ from skillsManager.models import (
 
 
 class ProjectWorkView(Page):
+    back_to_profiles = html.div(
+        children__backlink=html.a(
+            "← Back to profiles",
+            attrs__href=lambda **_: reverse("main_menu.profiles"),
+        )
+    )
+    back_to_profiles_br = html.br(attrs__clear="all")
     project_work_table = Table(
         auto__model=ProfileProjectReference,
         page_size=10,
@@ -45,7 +53,7 @@ class ProjectWorkEdit(Page):
     def get_initial(profile_pk, pk, **_):
         initial = []
         for profile_project_skill_ref in ProfileProjectSkillReference.objects.filter(
-            profile_project_reference=pk
+                profile_project_reference=pk
         ):
             profile_skill_refs = ProfileSkillReference.objects.filter(
                 skill=profile_project_skill_ref.skill, profile__pk=profile_pk

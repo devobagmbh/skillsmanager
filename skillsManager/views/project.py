@@ -1,11 +1,19 @@
+from django.urls import reverse
 from django.utils.timezone import now
-from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table
+from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table, html
 from iommi.form import save_nested_forms
 
 from skillsManager.models import Project, ProjectLog, Customer, CustomerLog
 
 
 class CustomerEdit(Form):
+    back = html.div(
+        children__backlink=html.a(
+            "← Back to customers",
+            attrs__href=lambda **_: reverse("main_menu.projects"),
+        )
+    )
+    back_hr = html.br(attrs__clear="all")
     edit_customer = Form.edit(
         title="Customer",
         auto__model=Customer,
