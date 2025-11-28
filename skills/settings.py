@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
                  "django.middleware.security.SecurityMiddleware",
+                 "whitenoise.middleware.WhiteNoiseMiddleware",
                  "django.contrib.sessions.middleware.SessionMiddleware",
                  "django.middleware.common.CommonMiddleware",
                  "django.middleware.csrf.CsrfViewMiddleware",
@@ -64,7 +65,6 @@ MIDDLEWARE = [
                  "django.contrib.messages.middleware.MessageMiddleware",
                  "django.middleware.clickjacking.XFrameOptionsMiddleware",
                  "auditlog.middleware.AuditlogMiddleware",
-                 "whitenoise.middleware.WhiteNoiseMiddleware",
                  "iommi.live_edit.Middleware",
                  "iommi.sql_trace.Middleware",
                  "iommi.profiling.Middleware",
@@ -140,6 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = "static"
 MEDIA_ROOT = BASE_DIR / "static/images"
 MEDIA_URL = "media/"
 
