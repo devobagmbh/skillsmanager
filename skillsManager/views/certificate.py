@@ -1,9 +1,18 @@
-from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table
-from skillsManager.models import Certificate, CertificateVendor
+from django.urls import reverse
+from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table, html
 from iommi.form import save_nested_forms
+
+from skillsManager.models import Certificate, CertificateVendor
 
 
 class VendorEdit(Form):
+    back = html.div(
+        children__backlink=html.a(
+            "← Back to vendors",
+            attrs__href=lambda **_: reverse("main_menu.certificates"),
+        )
+    )
+    back_hr = html.br(attrs__clear="all")
     edit_vendor = Form.edit(
         title="Vendor",
         auto__model=CertificateVendor,

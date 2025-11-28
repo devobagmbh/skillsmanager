@@ -14,18 +14,24 @@ from iommi import (
 )
 from iommi.form import save_nested_forms
 
-from ..models import (
+from skillsManager.models import (
     Profile,
     ProfileMeta,
-    ProfileSkillReference,
     ProfileCertificateReference,
     Language,
     Education,
 )
-from ..widgets import range_field, range_field_helper
+from skillsManager.widgets import range_field
 
 
 class ProfileEdit(Form):
+    back_to_profiles = html.div(
+        children__backlink=html.a(
+            "← Back to profiles",
+            attrs__href=lambda **_: reverse("main_menu.profiles"),
+        )
+    )
+    back_to_profiles_br = html.br(attrs__clear="all")
     edit_profile = Form.edit(
         title="Profile",
         auto__model=Profile,
@@ -72,23 +78,6 @@ class ProfileEdit(Form):
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
         },
     )
-    skills_hr = html.hr()
-    skills = EditTable(
-        title="Skills",
-        auto__model=ProfileSkillReference,
-        rows=lambda pk, **_: ProfileSkillReference.objects.filter(profile__pk=pk),
-        columns__profile__field=Field.non_rendered(
-            initial=lambda pk, **_: Profile.objects.get(pk=pk)
-        ),
-        columns__level__field=range_field(1, 10, include=True),
-        columns__favorite__field=range_field(1, 10, include=True),
-        columns__remarks__field__include=True,
-        columns__delete=EditColumn.delete(),
-        outer__children__rangehelper=range_field_helper(),
-        **{
-            "attrs__data-iommi-edit-table-delete-with": "checkbox",
-        },
-    )
 
     class Meta:
         actions__submit__post_handler = save_nested_forms
@@ -114,9 +103,16 @@ class ProfileView(Page):
                 else ""
             ),
             cell__format=lambda value, **_: (
-                mark_safe('<img src="%s" />' % (value)) if value != "" else ""
+                mark_safe('<img src="%s" />' % value) if value != "" else ""
             ),
             cell__attrs__style={"max-width": "4em", "max-height": "4em"},
+        ),
+        columns__skills=Column.link(
+            attr=None,
+            cell__url=lambda row, **_: reverse_lazy(
+                "profileskills-list", kwargs=dict(profile_pk=row.pk)
+            ),
+            cell__value="Skills",
         ),
         columns__certificates=Column.link(
             attr=None,
@@ -147,13 +143,13 @@ profile_delete = Form.delete(
 )
 
 
-def delete_certificate_file(instance, **kwargs):
+def delete_certificate_file(instance):
     instance.file = None
     instance.save()
     return HttpResponseRedirect(instance.get_absolute_url())
 
 
-def download_certificate(instance, **kwargs):
+def download_certificate(instance):
     return HttpResponseRedirect(instance.file.url)
 
 

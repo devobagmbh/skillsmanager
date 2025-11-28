@@ -79,6 +79,9 @@ class ProfileSkillReference(models.Model):
     def __str__(self):
         return "%s - %d/%d" % (self.skill.name, self.level, self.favorite)
 
+    def get_absolute_url(self):
+        return reverse("profileskills-view", kwargs={"profile_pk": self.profile.pk, "pk": self.pk})
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=200)
