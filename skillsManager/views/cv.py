@@ -1,8 +1,12 @@
 import io
-from django import forms
-from django.http import FileResponse, HttpResponse
-from django.shortcuts import render
+
+from django.http import FileResponse
+from django.template import Context
+from django.template import Template as DjangoTemplate
+from django.utils.translation import gettext_lazy as _
+from iommi import Action, Page, Form, Field, html
 from weasyprint import HTML
+
 from ..models import (
     Profile,
     Template,
@@ -14,16 +18,12 @@ from ..models import (
     ProfileProjectSkillReference,
     ProfileCertificateReference,
 )
-from django.template import Template as DjangoTemplate
-from django.template import Context
-from iommi import Action, Page, Form, Field, html
-from iommi.views import HttpResponseRedirect
 
 
 def get_context(profile):
     project_works = []
     for project_work in ProfileProjectReference.objects.filter(
-        profile=profile
+            profile=profile
     ).order_by("-active_since"):
         project_works.append(
             dict(
@@ -49,52 +49,49 @@ def get_context(profile):
     )
 
 
-class CVPage(Page):
-
-    def do_export(form, **_):
-        if form.is_valid():
-            template = DjangoTemplate(form.fields["template"].value.template)
-            pdf = HTML(
-                string=template.render(
-                    context=get_context(form.fields["profile"].value)
-                )
-            )
-            buffer = io.BytesIO()
-            pdf.write_pdf(buffer)
-            buffer.seek(0)
-            return FileResponse(buffer, as_attachment=True, filename="cv.pdf")
-
-    def do_preview(form, **_):
-        if form.is_valid():
-            template = DjangoTemplate(form.fields["template"].value.template)
-            form.extra["preview"] = template.render(
+def do_export(form, **_):
+    if form.is_valid():
+        template = DjangoTemplate(form.fields["template"].value.template)
+        pdf = HTML(
+            string=template.render(
                 context=get_context(form.fields["profile"].value)
             )
-        else:
-            form.extra["preview"] = ""
-        return HttpResponseRedirect(".")
+        )
+        buffer = io.BytesIO()
+        pdf.write_pdf(buffer)
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename="cv.pdf")
+    return None
 
-    title = html.h1("CV exporter")
+
+def do_preview(form, page, **_):
+    if form.is_valid():
+        template = DjangoTemplate(form.fields["template"].value.template)
+        page.parts["preview"].attrs.srcdoc = template.render(
+            context=get_context(form.fields["profile"].value)
+        )
+    else:
+        page.parts["preview"].attrs.srcdoc = ""
+
+
+class CVPage(Page):
+    title = html.h1(_("CV exporter"))
 
     profile_select = Form(
         extra__preview="",
-        fields__profile=Field.choice_queryset(Profile.objects, model=Profile),
+        fields__profile=Field.choice_queryset(Profile.objects.all(), display_name=_("Profile"), model=Profile),
         fields__template=Field.choice_queryset(
-            Template.objects,
+            Template.objects.all(),
+            display_name=_("Template"),
             model=Template,
             initial=lambda **_: (
                 Template.objects.first() if Template.objects.count() > 0 else None
             ),
         ),
         actions__preview=Action.button(
-            display_name="Preview", attrs__name="-preview", post_handler=do_preview
+            display_name=_("Preview"), attrs__name="-preview", post_handler=do_preview
         ),
-        actions__export=Action.primary(display_name="Export", post_handler=do_export),
-        fields__preview=Field(
-            tag="iframe",
-            attrs__class__preview=True,
-            attrs__srcdoc=lambda form, **_: form.extra["preview"],
-            required=False,
-            after=99,
-        ),
+        actions__export=Action.primary(display_name=_("Export"), post_handler=do_export),
     )
+
+    preview = html.iframe(attrs__class__preview=True, attrs__srcdoc="")

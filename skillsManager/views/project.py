@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table, html
 from iommi.form import save_nested_forms
 
@@ -9,18 +10,18 @@ from skillsManager.models import Project, ProjectLog, Customer, CustomerLog
 class CustomerEdit(Form):
     back = html.div(
         children__backlink=html.a(
-            "← Back to customers",
+            _("← Back to customers"),
             attrs__href=lambda **_: reverse("main_menu.projects"),
         )
     )
     back_hr = html.br(attrs__clear="all")
     edit_customer = Form.edit(
-        title="Customer",
+        title=_("Customer"),
         auto__model=Customer,
         instance=lambda pk, **_: Customer.objects.get(pk=pk),
     )
     projects = EditTable(
-        title="Projects",
+        title=_("Projects"),
         auto__model=Project,
         rows=lambda pk, **_: Project.objects.filter(customer__pk=pk),
         columns__customer__field=Field.non_rendered(
@@ -37,7 +38,7 @@ class CustomerEdit(Form):
         }
     )
     logs = EditTable(
-        title="Customer logs",
+        title=_("Customer logs"),
         auto__model=CustomerLog,
         rows=lambda pk, **_: CustomerLog.objects.filter(customer__pk=pk),
         columns__delete=EditColumn.delete(),
@@ -47,7 +48,7 @@ class CustomerEdit(Form):
         }
     )
     project_logs = EditTable(
-        title="Project logs",
+        title=_("Project logs"),
         auto__model=ProjectLog,
         page_size=10,
         rows=lambda pk, **_: ProjectLog.objects.filter(project__customer__pk=pk),
@@ -63,6 +64,7 @@ class CustomerEdit(Form):
 
 class CustomerView(Page):
     customers = Table(
+        title=_("Customers"),
         auto__model=Customer,
         page_size=10,
         columns__projects=Column(
@@ -72,7 +74,7 @@ class CustomerView(Page):
         columns__delete=Column.delete(),
     )
     new_customer = Form.create(
-        title="New customer",
+        title=_("New customer"),
         auto__model=Customer,
         extra__redirect_to=".",
     )

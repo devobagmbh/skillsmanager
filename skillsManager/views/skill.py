@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from iommi import Column, Form, Page, Table, html
 
 from skillsManager.models import Skill
@@ -14,7 +15,7 @@ class SkillView(Page):
         columns__delete=Column.delete(),
     )
     new_skill = Form.create(
-        title="New skill",
+        title=_("New skill"),
         auto__model=Skill,
         extra__redirect_to=".",
     )
@@ -23,7 +24,7 @@ class SkillView(Page):
 class SkillEdit(Page):
     back = html.div(
         children__backlink=html.a(
-            "← Back to skills",
+            _("← Back to skills"),
             attrs__href=lambda **_: reverse("main_menu.skills"),
         )
     )

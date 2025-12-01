@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from iommi import Column, EditColumn, EditTable, Field, Form, Page, Table, html
 from iommi.form import save_nested_forms
 
@@ -8,18 +9,19 @@ from skillsManager.models import Certificate, CertificateVendor
 class VendorEdit(Form):
     back = html.div(
         children__backlink=html.a(
-            "← Back to vendors",
+            _("← Back to vendors"),
             attrs__href=lambda **_: reverse("main_menu.certificates"),
         )
     )
     back_hr = html.br(attrs__clear="all")
     edit_vendor = Form.edit(
-        title="Vendor",
+        # Translators: This is the title of certificate vendors
+        title=_("Vendor"),
         auto__model=CertificateVendor,
         instance=lambda pk, **_: CertificateVendor.objects.get(pk=pk),
     )
     certificates = EditTable(
-        title="Certificates",
+        title=_("Certificates"),
         auto__model=Certificate,
         rows=lambda pk, **_: Certificate.objects.filter(vendor__pk=pk),
         columns__vendor__field=Field.non_rendered(
@@ -40,16 +42,18 @@ class VendorEdit(Form):
 
 class VendorView(Page):
     vendors = Table(
+        title=_("Vendors"),
         auto__model=CertificateVendor,
         page_size=10,
         columns__certificates=Column(
+            display_name=_("Certificates"),
             cell__value=lambda row, **_: Certificate.objects.filter(vendor=row)
         ),
         columns__edit=Column.edit(),
         columns__delete=Column.delete(),
     )
     new_vendor = Form.create(
-        title="New certificate vendor",
+        title=_("New certificate vendor"),
         auto__model=CertificateVendor,
         extra__redirect_to=".",
     )
