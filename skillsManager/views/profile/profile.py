@@ -1,7 +1,7 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from iommi import (
     EditColumn,
     EditTable,
@@ -10,14 +10,12 @@ from iommi import (
     Table,
     Column,
     Page,
-    html, Action,
-)
+    html, )
 from iommi.form import save_nested_forms
 
 from skillsManager.models import (
     Profile,
     ProfileMeta,
-    ProfileCertificateReference,
     Language,
     Education,
 )
@@ -27,18 +25,18 @@ from skillsManager.widgets import range_field
 class ProfileEdit(Form):
     back_to_profiles = html.div(
         children__backlink=html.a(
-            "← Back to profiles",
+            _("← Back to profiles"),
             attrs__href=lambda **_: reverse("main_menu.profiles"),
         )
     )
     back_to_profiles_br = html.br(attrs__clear="all")
     edit_profile = Form.edit(
-        title="Profile",
+        title=_("Profile"),
         auto__model=Profile,
         instance=lambda pk, **_: Profile.objects.get(pk=pk),
     )
     edit_meta = Form.create_or_edit(
-        title="Personal data",
+        title=_("Personal data"),
         auto__model=ProfileMeta,
         instance=lambda pk, **_: (
             ProfileMeta.objects.get(profile=Profile.objects.get(pk=pk))
@@ -47,13 +45,13 @@ class ProfileEdit(Form):
             else None
         ),
         fields__description__input__attrs__rows=10,
-        fields__maturity_level=range_field(1, 10, include=True),
+        fields__maturity_level=range_field(1, 10, include=True, display_name=_("Maturity level")),
         fields__profile=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
     )
     languages = EditTable(
-        title="Languages",
+        title=_("Languages"),
         auto__model=Language,
         rows=lambda pk, **_: Language.objects.filter(profile__pk=pk),
         columns__profile__field=Field.non_rendered(
@@ -66,7 +64,7 @@ class ProfileEdit(Form):
         },
     )
     education = EditTable(
-        title="Education",
+        title=_("Education"),
         auto__model=Education,
         rows=lambda pk, **_: Education.objects.filter(profile__pk=pk),
         columns__profile__field=Field.non_rendered(
@@ -86,9 +84,11 @@ class ProfileEdit(Form):
 
 class ProfileView(Page):
     profile_view = Table(
+        title=_("Profiles"),
         auto__model=Profile,
         page_size=10,
         columns__birthday=Column(
+            display_name=_("Birthday"),
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).birthday
                 if ProfileMeta.objects.filter(profile=row).count() == 1
@@ -96,6 +96,7 @@ class ProfileView(Page):
             ),
         ),
         columns__photo=Column(
+            display_name=_("Photo"),
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).photo.url
                 if ProfileMeta.objects.filter(profile=row).count() == 1
@@ -108,31 +109,34 @@ class ProfileView(Page):
             cell__attrs__style={"max-width": "4em", "max-height": "4em"},
         ),
         columns__skills=Column.link(
+            display_name=_("Skills"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "profileskills-list", kwargs=dict(profile_pk=row.pk)
             ),
-            cell__value="Skills",
+            cell__value=_("Skills"),
         ),
         columns__certificates=Column.link(
+            display_name=_("Certificates"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "profilecertificates-list", kwargs=dict(profile_pk=row.pk)
             ),
-            cell__value="Certificates",
+            cell__value=_("Certificates"),
         ),
         columns__projectwork=Column.link(
+            display_name=_("Project work"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "projectwork-list", kwargs=dict(profile_pk=row.pk)
             ),
-            cell__value="Project work",
+            cell__value=_("Project work"),
         ),
         columns__edit=Column.edit(),
         columns__delete=Column.delete(),
     )
     new_profile = Form.create(
-        title="New profile",
+        title=_("New profile"),
         auto__model=Profile,
         extra__redirect=lambda form, **_: redirect("profile-edit", pk=form.instance.pk),
     )
@@ -140,64 +144,4 @@ class ProfileView(Page):
 
 profile_delete = Form.delete(
     instance=lambda pk, **_: Profile.objects.get(pk=pk),
-)
-
-
-def delete_certificate_file(instance):
-    instance.file = None
-    instance.save()
-    return HttpResponseRedirect(instance.get_absolute_url())
-
-
-def download_certificate(instance):
-    return HttpResponseRedirect(instance.file.url)
-
-
-class ProfileCertificateEdit(Page):
-    certificate = Form.edit(
-        title="Edit certificate",
-        auto__model=ProfileCertificateReference,
-        instance=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk),
-        actions__download=Action.submit(
-            display_name="Download certificate",
-            post_handler=download_certificate,
-            include=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk).file,
-        ),
-        actions__clear=Action.submit(
-            display_name="Delete certificate file",
-            post_handler=delete_certificate_file,
-            include=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk).file,
-        ),
-        extra__redirect=lambda profile_pk, **_: redirect(
-            reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk})),
-    )
-
-
-class ProfileCertificateView(Page):
-    certificates = Table(
-        auto__model=ProfileCertificateReference,
-        page_size=10,
-        rows=lambda profile_pk, **_: ProfileCertificateReference.objects.filter(profile_id=profile_pk),
-        columns__file=Column(
-            cell__value=lambda row, **_: row.file.url if row.file else "",
-            cell__format=lambda value, **_: (
-                mark_safe('<a href="%s">Download</a>' % value) if value != "" else ""
-            ),
-        ),
-        columns__edit=Column.edit(),
-        columns__delete=Column.delete(),
-    )
-
-    new_certificate = Form.create(
-        title="New certificate",
-        auto__model=ProfileCertificateReference,
-        extra__redirect_to=".",
-        fields__profile=Field.non_rendered(
-            initial=lambda profile_pk, **_: Profile.objects.get(pk=profile_pk)
-        ),
-    )
-
-
-profile_certificate_delete = Form.delete(
-    instance=lambda profile_pk, pk, **_: ProfileCertificateReference.objects.get(profile_id=profile_pk, pk=pk)
 )

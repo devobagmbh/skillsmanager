@@ -1,6 +1,7 @@
 import os
 
 from django.urls import path
+from django.utils.translation import gettext as _
 from iommi.main_menu import MainMenu, M, EXTERNAL
 
 from .views import (
@@ -18,18 +19,22 @@ menu_declaration = MainMenu(
     items=(
             dict(
                 home=M(
+                    display_name=_("Home"),
                     icon="home",
                     view=home.HomePage().as_view(),
                 ),
                 cv=M(
+                    display_name=_("CV"),
                     icon="print",
                     view=cv.CVPage().as_view(),
                 ),
                 skill_search=M(
+                    display_name=_("Search"),
                     icon="search",
                     view=skill_search.SkillSearchPage().as_view(),
                 ),
                 profiles=M(
+                    display_name=_("Profiles"),
                     icon="users",
                     view=profile.ProfileView().as_view(),
                     paths=[
@@ -111,6 +116,7 @@ menu_declaration = MainMenu(
                     ],
                 ),
                 skills=M(
+                    display_name=_("Skills"),
                     icon="check",
                     view=skill.SkillView().as_view(),
                     paths=[
@@ -128,6 +134,7 @@ menu_declaration = MainMenu(
                     ],
                 ),
                 certificates=M(
+                    display_name=_("Certificates"),
                     icon="certificate",
                     view=certificate.VendorView().as_view(),
                     paths=[
@@ -149,6 +156,7 @@ menu_declaration = MainMenu(
                     ],
                 ),
                 projects=M(
+                    display_name=_("Projects"),
                     icon="book",
                     view=project.CustomerView().as_view(),
                     paths=[
@@ -170,6 +178,7 @@ menu_declaration = MainMenu(
                     ],
                 ),
                 templates=M(
+                    display_name=_("Templates"),
                     icon="file",
                     view=template.TemplateView().as_view(),
                     paths=[

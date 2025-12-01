@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.template import Template
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from iommi import Page, Form, Table, Column, Field, html, Panel
 
 from skillsManager.models import ProfileSkillReference, Profile, Skill
@@ -10,7 +11,7 @@ from skillsManager.widgets import range_field
 
 class ProfileSkillEdit(Page):
     skill = Form.edit(
-        title="Edit skill",
+        title=_("Edit skill"),
         auto__model=ProfileSkillReference,
         instance=lambda pk, **_: ProfileSkillReference.objects.get(pk=pk),
         fields__level=range_field(1, 10, include=True),
@@ -20,14 +21,10 @@ class ProfileSkillEdit(Page):
     )
 
 
-def save_skill(form, **kwargs):
-    pass
-
-
 class ProfileSkillView(Page):
     back_to_profiles = html.div(
         children__backlink=html.a(
-            "← Back to profiles",
+            _("← Back to profiles"),
             attrs__href=lambda **_: reverse("main_menu.profiles"),
         )
     )
@@ -57,7 +54,7 @@ class ProfileSkillView(Page):
     )
 
     new_skill_reference = Form.create(
-        title="New skill reference",
+        title=_("New skill reference"),
         auto__model=ProfileSkillReference,
         fields__new_skill=Field(
             attr=None,

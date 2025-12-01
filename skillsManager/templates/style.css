@@ -28,10 +28,7 @@
 .preview {
 	width: 73em;
 	height: 100em;
-	margin-top: 1em;
 	border: 1px dashed black;
-	position: absolute;
-	top: 15em;
 }
 
 div[data-iommi-path="fields__edit_meta__fields__photo"] img {

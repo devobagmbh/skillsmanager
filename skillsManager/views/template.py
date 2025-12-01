@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from iommi import Column, Form, Page, Table, html
 
 from skillsManager.models import Template
@@ -6,6 +7,7 @@ from skillsManager.models import Template
 
 class TemplateView(Page):
     template_table = Table(
+        title=_("Templates"),
         auto__model=Template,
         page_size=10,
         columns__template__include=False,
@@ -13,7 +15,7 @@ class TemplateView(Page):
         columns__delete=Column.delete(),
     )
     new_template = Form.create(
-        title="New template",
+        title=_("New template"),
         auto__model=Template,
         extra__redirect_to=".",
         fields__template__input__attrs__style__height="40em",
@@ -23,7 +25,7 @@ class TemplateView(Page):
 class TemplateEdit(Page):
     back = html.div(
         children__backlink=html.a(
-            "← Back to templates",
+            _("← Back to templates"),
             attrs__href=lambda **_: reverse("main_menu.templates"),
         )
     )
