@@ -58,6 +58,7 @@ class ProfileSkillView(Page):
         auto__model=ProfileSkillReference,
         fields__new_skill=Field(
             attr=None,
+            required=False,
             group="skill",
             template=Template(
                 mark_safe(
