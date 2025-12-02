@@ -1,6 +1,6 @@
 apiVersion: v2
 name: skillsmanager
-description: A Helm chart for deploying Skillsmanager
+description: A Helm chart for deploying Skills manager
 type: application
 version: 0.1.1
 appVersion: "1.0.0"
