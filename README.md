@@ -6,6 +6,10 @@ Management of skills, certificates and projects for consulting companies.
 
 ![Static Badge](https://img.shields.io/badge/Made_with-Django-support)
 
+# Usage
+
+Check out the [project wiki](https://github.com/devobagmbh/skillsmanager/wiki) for information how to use Skills manager.
+
 # Installation
 
 ## Docker/Container deployment
@@ -63,36 +67,6 @@ Skills manager is configured using the following environment variables:
         "3dc6539e-0589-4663-b782-fef100d839aa": ["GroupName2", "GroupName3"] # mapped to multiple Django groups
 }
 ```
-
-# Usage
-
-## CV generator
-
-Skills Manager can generate CV as PDF files from the data contained in the database. This is done by rendering a [Jinja HTML Template](https://docs.djangoproject.com/en/5.2/ref/templates/language/) using [Weasyprint](https://weasyprint.org/). Multiple templates are supported.
-
-### Available data
-
-Skills Manager supplies templates with a template context that includes data from multiple models. See the [model source code](skillsManager/models.py) on what fields are available. Fields from relationships are also available using a dot syntax. (e.g. `certificates.vendor.name`).
-
-* profile: The `Profile` model from the selected profile
-* profile_meta: The `ProfileMeta` model associated with the selected profile
-* languages: A list of `Language` models associated with the selected profile
-* educations: A list of `Education` models associated with the selected profile
-* certificates: A list of `Certificate` models associated with the selected profile
-* project_works: A list of of objects of projects the profile worked on with the following fields:
-  * project_work: The associated `ProfileProjectReference` model - details about the work
-  * skills: a list of `ProfileProjectSkillReference` models associated with the project work - skills used during this
-* skills: A list of `ProfileSkillReference` models associated with the selected profile, sorted by level descending
-
-### Markdown support
-
-Markdown support is available provided by [django-markdownify](https://github.com/erwinmatijsen/django-markdownify) by including
-
-    {% load markdownify %}
-
-at the top of the template and then using the markdownify pipe to render a text as html:
-
-    {% remarks|markdownify %}
 
 # Development
 
