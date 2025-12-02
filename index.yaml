@@ -1,0 +1,18 @@
+apiVersion: v1
+entries:
+  skillsmanager:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-12-02T07:08:58.570049113Z"
+    description: A Helm chart for deploying Skills manager
+    digest: 46dd614eccae4658ec47fc9edf61d5161e164934639449033fa884c2d6ff8964
+    home: https://github.com/devobagmbh/skillsmanager
+    icon: https://github.com/devobagmbh/skillsmanager/blob/feature/dpr/firstversion/skillsManager/static/skillsManager/favicon.png?raw=true
+    name: skillsmanager
+    sources:
+    - https://github.com/devobagmbh/skillsmanager
+    type: application
+    urls:
+    - https://github.com/devobagmbh/skillsmanager/releases/download/skillsmanager-0.1.1/skillsmanager-0.1.1.tgz
+    version: 0.1.1
+generated: "2025-12-02T07:08:58.570059402Z"
