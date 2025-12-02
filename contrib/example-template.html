@@ -1,0 +1,240 @@
+{% load markdownify %}
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CV of {{ profile.given_name }} {{ profile.last_name }}</title>
+</head>
+
+<body>
+<div class="page">
+
+    <!-- ## HEADER ## -->
+
+    <header id="headline" class="backgroudcolor-gray-2" role="banner">
+        <svg
+                id="headline-logo"
+                width="43.664452mm"
+                height="24.805393mm"
+                viewBox="0 0 43.664452 24.805393"
+                version="1.1"
+                inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+                sodipodi:docname="skillsManagerLogo.svg"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+                xmlns="http://www.w3.org/2000/svg"
+        >
+            <sodipodi:namedview
+                    id="namedview1"
+                    pagecolor="#ffffff"
+                    bordercolor="#000000"
+                    borderopacity="0.25"
+                    inkscape:showpageshadow="2"
+                    inkscape:pageopacity="0.0"
+                    inkscape:pagecheckerboard="0"
+                    inkscape:deskcolor="#d1d1d1"
+                    inkscape:document-units="mm"
+                    inkscape:zoom="4.0312099"
+                    inkscape:cx="22.573868"
+                    inkscape:cy="73.303055"
+                    inkscape:window-width="2560"
+                    inkscape:window-height="1302"
+                    inkscape:window-x="4072"
+                    inkscape:window-y="25"
+                    inkscape:window-maximized="0"
+                    inkscape:current-layer="g3"/>
+            <defs
+                    id="defs1"/>
+            <g
+                    inkscape:label="Layer1"
+                    inkscape:groupmode="layer"
+                    id="layer1"
+                    transform="translate(-41.715557,-67.666435)">
+                <g
+                        id="g3"
+                        inkscape:label="logo">
+                    <rect
+                            style="fill:#206ea7;fill-opacity:1;stroke:none;stroke-width:0.265676;stroke-opacity:1"
+                            id="rect2"
+                            width="43.664452"
+                            height="24.805393"
+                            x="41.715557"
+                            y="67.666435"
+                            inkscape:label="background"/>
+                    <text
+                            xml:space="preserve"
+                            style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:11.3188px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0878615;stroke-opacity:1"
+                            x="46.859306"
+                            y="84.326836"
+                            id="text2"
+                            transform="scale(0.95427214,1.0479191)"
+                            inkscape:label="manager"><tspan
+           sodipodi:role="line"
+           id="tspan2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.3188px;font-family:Serif;-inkscape-font-specification:'Serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0878615;stroke-opacity:1"
+           x="46.859306"
+           y="84.326836">Manager</tspan></text>
+                    <text
+                            xml:space="preserve"
+                            style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:13.0696px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.204213"
+                            x="44.626217"
+                            y="79.582016"
+                            id="text1"
+                            inkscape:label="skills"><tspan
+           sodipodi:role="line"
+           id="tspan1"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.0696px;font-family:Serif;-inkscape-font-specification:'Serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.204213;stroke-opacity:1"
+           x="44.626217"
+           y="79.582016">skills</tspan></text>
+                </g>
+            </g>
+        </svg>
+
+        <!-- ## TITLE AND SIDEBAR ## -->
+        <div class="row">
+            <h1 class="color-blue-3">{{ profile.given_name }} {{ profile.last_name }}</h1>
+            <p>{{ profile_meta.job_title }}</p>
+        </div>
+    </header>
+    <aside class="sidebar-content" role="complementary">
+        <section id="availible">
+            <div class="headline">
+                <h2>Available from</h2>
+                <hr>
+            </div>
+            <div class="row">
+                <p>{{ profile_meta.available_from }}</p>
+            </div>
+        </section>
+        <section id="level">
+            <div class="headline">
+                <h2>Experience Level</h2>
+                <hr class="color-green-1">
+            </div>
+            <!-- ## MATURITY ## -->
+            <div class="row">
+                {% if profile_meta.maturity_level <= 3 %}Junior{% elif profile_meta.maturity_level <= 5 %}
+                    Senior{% elif profile_meta.maturity_level <= 10 %}Expert{% else %}Evangelist{% endif %}
+                <svg id="progress">
+                    <rect width="{{ profile_meta.maturity_level_percent }}%" height="1em"
+                          style="fill: #8abd62; stroke: none"/>
+                </svg>
+            </div>
+        </section>
+        <!-- ## EDUCATION ## -->
+        <section id="education">
+            <div class="headline">
+                <h2>Education</h2>
+                <hr>
+            </div>
+            <div class="row">
+                <ul>
+                    {% for education in educations %}
+                        <li>{{ education.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        <!-- ## LANGUAGES ## -->
+        <section id="languages">
+            <div class="headline">
+                <h2>Languages</h2>
+                <hr>
+            </div>
+            <div class="row">
+                <ul>
+                    {% for language in languages %}
+                        <li>{{ language.language }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        <!-- ## SKILLS ## -->
+        <section id="top-skills">
+            <div class="headline">
+                <h2>Top Skills</h2>
+                <hr>
+            </div>
+            <div class="row">
+                <ul>
+                    {% for skill in skills|slice:":10" %}
+                        <li>{{ skill.skill.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        <!-- ## CERTIFICATES ## -->
+        <section id="certificates">
+            <div class="headline">
+                <h2>Certificates</h2>
+                <hr class="color-green-1">
+            </div>
+            <div class="row">
+                <ul>
+                    {% for certificate in certificates %}
+                        <li>{{ certificate.certificate.vendor.name }} - {{ certificate.certificate.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </aside>
+
+    <aside class="sidebar-placeholder" aria-hidden="true"></aside>
+
+    <div id="container">
+        <main role="main" class="content">
+            <section id="description">
+                <div class="headline">
+                    <h2>Description</h2>
+                    <hr class="color-green-1">
+                </div>
+                <div class="row">
+                    <p>
+                        {{ profile_meta.description }}
+                    </p>
+                </div>
+            </section>
+
+            <!-- ## PROJECTS ## -->
+            <section id="projects">
+                <div class="headline">
+                    <h2>Projects</h2>
+                    <hr>
+                </div>
+            </section>
+
+            {% for project_work in project_works %}
+                <article>
+                    <div class="name-timespan">
+                        <span class="project">{{ project_work.project_work.project.name }}</span>
+                        <span>{{ project_work.project_work.active_since|date:"Y" }} – {{ project_work.project_work.active_until|date:"Y"|default:"Today" }}</span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="customer">
+                        {{ project_work.project_work.project.customer.name }}
+                    </div>
+                    <div class="clear"></div>
+                    <div class="topics">
+                        {{ project_work.project_work.remarks|markdownify }}
+                    </div>
+                    <div class="clear"></div>
+                    <div class="skills">
+                        Skills:
+                        {% for skill in project_work.skills %}{{ skill.skill.name }}{% if not forloop.last %},
+                        {% endif %}{% endfor %}
+                    </div>
+                </article>
+                {% if not forloop.last %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
+
+        </main>
+    </div>
+</div>
+</body>
+
+</html>
