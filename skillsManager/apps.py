@@ -3,6 +3,14 @@ from django.template.loader import get_template
 from iommi import register_style, Style, Asset, style_foundation
 
 
+def azure_user_mapping_fn(**attributes):
+    return {
+        "full_name": attributes["givenName"] + attributes["surname"],
+        "email": attributes["mail"],
+        "is_staff": True,
+    }
+
+
 class SkillsmanagerConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "skillsManager"

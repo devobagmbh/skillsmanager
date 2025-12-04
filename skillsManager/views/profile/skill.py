@@ -5,11 +5,19 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from iommi import Page, Form, Table, Column, Field, html, Panel
 
+from skillsManager.middleware.auth import has_permission_lambda
 from skillsManager.models import ProfileSkillReference, Profile, Skill
 from skillsManager.widgets import range_field
 
 
 class ProfileSkillEdit(Page):
+    back_to_profile = html.div(
+        children__backlink=html.a(
+            _("← Back to profile"),
+            attrs__href=lambda profile_pk, **_: reverse("profileskills-list", kwargs={"profile_pk": profile_pk}),
+        )
+    )
+    back_to_profiles_br = html.br(attrs__clear="all")
     skill = Form.edit(
         title=_("Edit skill"),
         auto__model=ProfileSkillReference,
@@ -18,6 +26,8 @@ class ProfileSkillEdit(Page):
         fields__favorite=range_field(1, 10, include=True),
         extra__redirect=lambda profile_pk, **_: redirect(
             reverse("profileskills-list", kwargs={"profile_pk": profile_pk})),
+        editable=has_permission_lambda("skillsManager.change_profileskillreference"),
+        actions__submit__include=has_permission_lambda("skillsManager.change_profileskillreference"),
     )
 
 
@@ -33,8 +43,8 @@ class ProfileSkillView(Page):
         auto__model=ProfileSkillReference,
         page_size=10,
         rows=lambda profile_pk, **_: ProfileSkillReference.objects.filter(profile_id=profile_pk),
-        columns__edit=Column.edit(),
-        columns__delete=Column.delete(),
+        columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_profileskillreference")),
+        columns__delete=Column.delete(include=has_permission_lambda("skillsManager.delete_profileskillreference")),
     )
 
     new_skill_modal = html.div(
@@ -49,7 +59,6 @@ class ProfileSkillView(Page):
             title="New skill",
             auto__model=Skill,
             extra__redirect_to=".",
-
         ),
     )
 
@@ -64,7 +73,8 @@ class ProfileSkillView(Page):
                 mark_safe(
                     '<button type="button" class="button" data-open="new-skill-modal" aria-controls="new-skill-modal" aria-haspopup="true" tabindex="0">+</button>'
                 )
-            )
+            ),
+            include=has_permission_lambda("skillsManager.add_skill"),
         ),
         fields__level=range_field(1, 10, include=True),
         fields__favorite=range_field(1, 10, include=True),
@@ -76,13 +86,14 @@ class ProfileSkillView(Page):
             p_main=Panel.div(dict(
                 p_skills=Panel.fieldset(dict(
                     skill=Panel.field(),
-                    new_skill=Panel.field(),
+                    new_skill=Panel.field(include=has_permission_lambda("skillsManager.add_skill")),
                 )),
                 level=Panel.field(),
                 favorite=Panel.field(),
                 remarks=Panel.field(),
             )),
-        ))
+        )),
+        include=has_permission_lambda("skillsManager.add_profileskillreference"),
     )
 
 
