@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from iommi import Column, Field, Form, Page, Table, html
 
+from skillsManager.middleware.auth import has_permission_lambda
 from skillsManager.models import (
     Profile,
     ProfileProjectReference,
@@ -25,9 +26,15 @@ class ProjectWorkView(Page):
         rows=lambda profile_pk, **_: ProfileProjectReference.objects.filter(
             profile__pk=profile_pk
         ),
+        columns__skills=Column(
+            display_name=_("Skills"),
+            cell__value=lambda row, **_: ProfileProjectSkillReference.objects.filter(
+                profile_project_reference__pk=row.pk
+            )
+        ),
         columns__remarks__include=False,
-        columns__edit=Column.edit(),
-        columns__delete=Column.delete(),
+        columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_profileprojectreference")),
+        columns__delete=Column.delete(include=has_permission_lambda("skillsManager.delete_profileprojectreference")),
     )
     new_project_work = Form.create(
         title=_("New project work entry"),
@@ -37,6 +44,7 @@ class ProjectWorkView(Page):
             initial=lambda profile_pk, **_: Profile.objects.get(pk=profile_pk)
         ),
         fields__remarks__input__attrs__rows="20",
+        include=has_permission_lambda("skillsManager.add_profileprojectreference")
     )
 
 
@@ -66,6 +74,13 @@ def get_initial(profile_pk, pk, **_):
 
 
 class ProjectWorkEdit(Page):
+    back_to_profiles = html.div(
+        children__backlink=html.a(
+            _("← Back to profile"),
+            attrs__href=lambda profile_pk, **_: reverse("profileskills-list", kwargs={"profile_pk": profile_pk}),
+        )
+    )
+    back_to_profiles_br = html.br(attrs__clear="all")
     project_work = Form.edit(
         title=_("Project Work entry"),
         auto__model=ProfileProjectReference,
@@ -74,11 +89,18 @@ class ProjectWorkEdit(Page):
         ),
         fields__skills=Field.multi_choice(
             attr=None,
-            choices=lambda profile_pk, **_: ProfileSkillReference.objects.filter(
+            choices=lambda user, profile_pk, **_: ProfileSkillReference.objects.filter(
                 profile__pk=profile_pk
             ).all(),
             initial=get_initial,
+            include=has_permission_lambda("skillsManager.change_profileprojectreference")
         ),
+        fields__skills_viewonly=Field.text(
+            display_name=_("Skills"),
+            initial=get_initial,
+            include=lambda user, **_: not user.has_perm("skillsManager.change_profileprojectreference"),
+        ),
+        editable=has_permission_lambda("skillsManager.change_profileprojectreference"),
         fields__remarks__input__attrs__rows="20",
         extra__on_save=store_skills,
     )

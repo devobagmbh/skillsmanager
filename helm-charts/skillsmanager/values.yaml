@@ -161,6 +161,8 @@ tolerations: []
 affinity: {}
 
 configuration:
+  # -- Whether to turn on role based access control
+  rbac: "false"
   # -- Database URL secret reference if the integrated SQLite database is not used
   databaseUrl:
     # -- Name of the secret

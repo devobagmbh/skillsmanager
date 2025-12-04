@@ -75,6 +75,8 @@ spec:
               value: '*'
             - name: DEBUG
               value: "{{.Values.configuration.debug}}"
+            - name: SKILLSMANAGER_USE_RBAC
+              value: "{{ .Values.configuration.rbac }}"
             - name: DJANGO_SUPERUSER_USERNAME
               value: {{.Values.configuration.djangoSuperUser.username | quote}}
             - name: DJANGO_SUPERUSER_EMAIL
