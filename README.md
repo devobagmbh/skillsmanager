@@ -55,6 +55,7 @@ Skills manager is configured using the following environment variables:
 * SECRET_KEY: The Django secret key
 * APPLICATION_HOST: Host the application runs on (e.g. skills.company.com). Required if DEBUG is not set to true.
 * DEBUG: Whether to run the application in Django debug mode [False]
+* SKILLSMANAGER_USE_RBAC: Whether to turn on role based access control [False]
 * AZURE_ENABLED: Whether login via Azure entra id is enabled. See [the django-azure-auth documentation](https://pypi.org/project/django-azure-auth/) for details
 * AZURE_CLIENT_ID: Azure client id
 * AZURE_CLIENT_SECRET: Azure client secret
@@ -67,6 +68,31 @@ Skills manager is configured using the following environment variables:
         "3dc6539e-0589-4663-b782-fef100d839aa": ["GroupName2", "GroupName3"] # mapped to multiple Django groups
 }
 ```
+
+## Role based access control
+
+Skills Manager supports detailed role based access control, that makes sure that only users with the proper permission
+sets can reach the different views.
+
+This is done by assigning Django permissions or groups to users using the Django admin interface at /admin. Superuser permissions are required for this.
+
+We have prepared the following default groups that you can assign to users to allow them access to different areas of Skills Manager:
+
+* SkillsManager - Readonly: Read only access to all data
+* SkillsManager - Skills Manager: Management of skills
+* SkillsManager - Certificates Manager: Management of certificates and certificate vendors
+* SkillsManager - Projects Manager: Management of customers, projects and customer and project logs
+* SkillsManager - Templates Manager: Management of cv templates
+* SkillsManager - Profile Manager: Management of all data in Skills manager
+* SkillsManager - Admins: All permissions in Django
+
+Accounts with superuser permissions have unrestricted access.
+
+# Azure login support
+
+Azure login is based on [Django Azure Auth](https://pypi.org/project/django-azure-auth/) and configured through the AZURE_* environment variables (see [above](#configuration))
+
+Every Azure user that logs in is granted staff permissions, so they can access the Administration UI. However, you need to add them to the *SkillsManager - Admins* group so that they can actually use the admin UI.
 
 # Development
 

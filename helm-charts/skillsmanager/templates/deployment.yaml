@@ -75,6 +75,8 @@ spec:
               value: '*'
             - name: DEBUG
               value: "{{.Values.configuration.debug}}"
+            - name: SKILLSMANAGER_USE_RBAC
+              value: "{{ .Values.configuration.rbac }}"
             - name: DJANGO_SUPERUSER_USERNAME
               value: {{.Values.configuration.djangoSuperUser.username | quote}}
             - name: DJANGO_SUPERUSER_EMAIL
@@ -100,7 +102,7 @@ spec:
               value: {{.Values.configuration.azure.prompt | quote}}
             {{- with .Values.configuration.azure.roles}}
             - name: AZURE_ROLES
-              value: {{. | toJson | quote}}
+              value: {{. | toJson }}
             {{- end }}
             {{- end }}
           {{- include "skillsmanager.volumeMounts" . | indent 10 }}

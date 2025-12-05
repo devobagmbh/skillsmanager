@@ -11,8 +11,8 @@ from iommi import (
     Column,
     Page,
     html, )
-from iommi.form import save_nested_forms
 
+from skillsManager.middleware.auth import has_permission_lambda
 from skillsManager.models import (
     Profile,
     ProfileMeta,
@@ -22,7 +22,7 @@ from skillsManager.models import (
 from skillsManager.widgets import range_field
 
 
-class ProfileEdit(Form):
+class ProfileEdit(Page):
     back_to_profiles = html.div(
         children__backlink=html.a(
             _("← Back to profiles"),
@@ -34,6 +34,8 @@ class ProfileEdit(Form):
         title=_("Profile"),
         auto__model=Profile,
         instance=lambda pk, **_: Profile.objects.get(pk=pk),
+        editable=has_permission_lambda("skillsManager.change_profile"),
+        actions__submit__include=has_permission_lambda("skillsManager.change_profile"),
     )
     edit_meta = Form.create_or_edit(
         title=_("Personal data"),
@@ -49,6 +51,9 @@ class ProfileEdit(Form):
         fields__profile=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
+        include=has_permission_lambda("skillsManager.view_profilemeta"),
+        editable=has_permission_lambda("skillsManager.change_profilemeta"),
+        actions__submit__include=has_permission_lambda("skillsManager.change_profilemeta"),
     )
     languages = EditTable(
         title=_("Languages"),
@@ -57,8 +62,11 @@ class ProfileEdit(Form):
         columns__profile__field=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
-        columns__language__field__include=True,
-        columns__delete=EditColumn.delete(),
+        include=has_permission_lambda("skillsManager.view_language"),
+        columns__language__field__include=has_permission_lambda("skillsManager.change_language"),
+        columns__delete=EditColumn.delete(include=has_permission_lambda("skillsManager.delete_language")),
+        edit_actions__save__include=has_permission_lambda("skillsManager.change_language"),
+        edit_actions__add_row__include=has_permission_lambda("skillsManager.add_language"),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
         },
@@ -70,16 +78,15 @@ class ProfileEdit(Form):
         columns__profile__field=Field.non_rendered(
             initial=lambda pk, **_: Profile.objects.get(pk=pk)
         ),
-        columns__name__field__include=True,
-        columns__delete=EditColumn.delete(),
+        include=has_permission_lambda("skillsManager.view_education"),
+        columns__delete=EditColumn.delete(include=has_permission_lambda("skillsManager.delete_education")),
+        edit_actions__save__include=has_permission_lambda("skillsManager.change_education"),
+        edit_actions__add_row__include=has_permission_lambda("skillsManager.add_education"),
+        columns__name__field__include=has_permission_lambda("skillsManager.change_education"),
         **{
             "attrs__data-iommi-edit-table-delete-with": "checkbox",
         },
     )
-
-    class Meta:
-        actions__submit__post_handler = save_nested_forms
-        extra__redirect_to = lambda **_: "/profiles"
 
 
 class ProfileView(Page):
@@ -89,6 +96,7 @@ class ProfileView(Page):
         page_size=10,
         columns__birthday=Column(
             display_name=_("Birthday"),
+            include=has_permission_lambda("skillsManager.view_profilemeta"),
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).birthday
                 if ProfileMeta.objects.filter(profile=row).count() == 1
@@ -97,6 +105,7 @@ class ProfileView(Page):
         ),
         columns__photo=Column(
             display_name=_("Photo"),
+            include=has_permission_lambda("skillsManager.view_profilemeta"),
             cell__value=lambda row, **_: (
                 ProfileMeta.objects.get(profile=row).photo.url
                 if ProfileMeta.objects.filter(profile=row).count() == 1
@@ -110,6 +119,7 @@ class ProfileView(Page):
         ),
         columns__skills=Column.link(
             display_name=_("Skills"),
+            include=has_permission_lambda("skillsManager.view_profileskillreference"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "profileskills-list", kwargs=dict(profile_pk=row.pk)
@@ -118,6 +128,7 @@ class ProfileView(Page):
         ),
         columns__certificates=Column.link(
             display_name=_("Certificates"),
+            include=has_permission_lambda("skillsManager.view_profilecertificatereference"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "profilecertificates-list", kwargs=dict(profile_pk=row.pk)
@@ -126,19 +137,21 @@ class ProfileView(Page):
         ),
         columns__projectwork=Column.link(
             display_name=_("Project work"),
+            include=has_permission_lambda("skillsManager.view_profileprojectreference"),
             attr=None,
             cell__url=lambda row, **_: reverse_lazy(
                 "projectwork-list", kwargs=dict(profile_pk=row.pk)
             ),
             cell__value=_("Project work"),
         ),
-        columns__edit=Column.edit(),
-        columns__delete=Column.delete(),
+        columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_profile")),
+        columns__delete=Column.delete(include=has_permission_lambda("skillsManager.delete_profile")),
     )
     new_profile = Form.create(
         title=_("New profile"),
         auto__model=Profile,
         extra__redirect=lambda form, **_: redirect("profile-edit", pk=form.instance.pk),
+        include=has_permission_lambda("skillsManager.add_profile"),
     )
 
 

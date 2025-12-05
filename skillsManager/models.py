@@ -152,6 +152,11 @@ class Project(models.Model):
     def __str__(self):
         return "%s/%s" % (self.customer.name, self.name)
 
+    def get_absolute_url(self):
+        return reverse(
+            "projects-view", kwargs={"customer_pk": self.customer.pk, "pk": self.pk}
+        )
+
     class Meta:
         verbose_name = _("Project")
         verbose_name_plural = _("Projects")
@@ -180,13 +185,16 @@ class ProfileProjectSkillReference(models.Model):
     )
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, verbose_name=_("Skill"))
 
+    def __str__(self):
+        return self.skill.name
+
     class Meta:
         verbose_name = _("Profile project skill reference")
         verbose_name_plural = _("Profile project skill references")
 
 
 class ProjectLog(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_("Profile"))
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_("Project"))
     notice = models.TextField(_("Notice"))
     timestamp = models.DateTimeField(_("Timestamp"), default=now)
 

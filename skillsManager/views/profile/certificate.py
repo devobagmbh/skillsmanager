@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from iommi import Page, Form, Action, Table, Column, Field, html
 
+from skillsManager.middleware.auth import has_permission_lambda
 from skillsManager.models import ProfileCertificateReference, Profile
 
 
@@ -19,10 +20,19 @@ def download_certificate(instance, **_):
 
 
 class ProfileCertificateEdit(Page):
+    back_to_profiles = html.div(
+        children__backlink=html.a(
+            "← Back to profiles",
+            attrs__href=lambda profile_pk, **_: reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk}),
+        )
+    )
+    back_to_profiles_br = html.br(attrs__clear="all")
     certificate = Form.edit(
         title=_("Edit certificate"),
         auto__model=ProfileCertificateReference,
         instance=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk),
+        editable=has_permission_lambda("skillsManager.change_profilecertificateedit"),
+        actions__submit__include=has_permission_lambda("skillsManager.change_profilecertificateedit"),
         actions__download=Action.submit(
             display_name=_("Download certificate"),
             post_handler=download_certificate,
@@ -56,8 +66,10 @@ class ProfileCertificateView(Page):
                 mark_safe('<a href="%s">Download</a>' % value) if value != "" else ""
             ),
         ),
-        columns__edit=Column.edit(),
-        columns__delete=Column.delete(),
+        columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_profilecertificatereference")),
+        columns__delete=Column.delete(
+            include=has_permission_lambda("skillsManager.delete_profilecertificatereference")
+        ),
     )
 
     new_certificate = Form.create(
@@ -67,6 +79,7 @@ class ProfileCertificateView(Page):
         fields__profile=Field.non_rendered(
             initial=lambda profile_pk, **_: Profile.objects.get(pk=profile_pk)
         ),
+        include=has_permission_lambda("skillsManager.add_profilecertificatereference"),
     )
 
 

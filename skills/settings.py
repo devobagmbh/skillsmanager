@@ -159,7 +159,8 @@ AZURE_AUTH = {
     "AUTHORITY": "https://login.microsoftonline.com/%s"
                  % (os.environ.get("AZURE_TENANT_ID", "")),
     "USERNAME_ATTRIBUTE": "mail",
-    "GROUP_ATTRIBUTE": "roles",
+    "GROUP_ATTRIBUTE": "groups",
+    "USER_MAPPING_FN": "skillsManager.apps.azure_user_mapping_fn",
 }
 
 if os.environ.get("AZURE_ROLES", "") != "":
@@ -183,3 +184,5 @@ IOMMI_DEFAULT_STYLE = "skills"
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SKILLSMANAGER_USE_RBAC = os.environ.get("SKILLSMANAGER_USE_RBAC", "False").lower() == "true"
