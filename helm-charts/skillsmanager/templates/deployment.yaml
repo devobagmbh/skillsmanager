@@ -102,7 +102,7 @@ spec:
               value: {{.Values.configuration.azure.prompt | quote}}
             {{- with .Values.configuration.azure.roles}}
             - name: AZURE_ROLES
-              value: {{. | toJson | quote}}
+              value: {{. | toJson }}
             {{- end }}
             {{- end }}
           {{- include "skillsmanager.volumeMounts" . | indent 10 }}
