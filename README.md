@@ -78,9 +78,21 @@ This is done by assigning Django permissions or groups to users using the Django
 
 We have prepared the following default groups that you can assign to users to allow them access to different areas of Skills Manager:
 
-*
+* SkillsManager - Readonly: Read only access to all data
+* SkillsManager - Skills Manager: Management of skills
+* SkillsManager - Certificates Manager: Management of certificates and certificate vendors
+* SkillsManager - Projects Manager: Management of customers, projects and customer and project logs
+* SkillsManager - Templates Manager: Management of cv templates
+* SkillsManager - Profile Manager: Management of all data in Skills manager
+* SkillsManager - Admins: All permissions in Django
 
 Accounts with superuser permissions have unrestricted access.
+
+# Azure login support
+
+Azure login is based on [Django Azure Auth](https://pypi.org/project/django-azure-auth/) and configured through the AZURE_* environment variables (see [above](#configuration))
+
+Every Azure user that logs in is granted staff permissions, so they can access the Administration UI. However, you need to add them to the *SkillsManager - Admins* group so that they can actually use the admin UI.
 
 # Development
 
