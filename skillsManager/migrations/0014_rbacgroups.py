@@ -31,6 +31,10 @@ def add_groups(apps, schema_editor):
             "SkillsManager - Readonly",
             Permission.objects.filter(content_type__app_label="skillsManager", codename__startswith="view")
         ),
+        (
+            "SkillsManager - Profile Manager",
+            Permission.objects.filter(content_type__app_label="skillsManager")
+        ),
         ("SkillsManager - Admins", Permission.objects.all())
     ]
 
@@ -43,11 +47,18 @@ def add_groups(apps, schema_editor):
         skills_manager.save()
 
 
+def delete_groups(apps, schema_editor):
+    # noinspection PyPep8Naming
+    Group = apps.get_model("auth", "Group")
+
+    Group.objects.filter(name__startswith="SkillsManager -").delete()
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ('skillsManager', '0013_alter_projectlog_project'),
     ]
 
     operations = [
-        migrations.RunPython(add_groups),
+        migrations.RunPython(add_groups, delete_groups),
     ]
