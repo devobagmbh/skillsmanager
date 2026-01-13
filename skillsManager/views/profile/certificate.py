@@ -23,7 +23,9 @@ class ProfileCertificateEdit(Page):
     back_to_profiles = html.div(
         children__backlink=html.a(
             "← Back to profiles",
-            attrs__href=lambda profile_pk, **_: reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk}),
+            attrs__href=lambda profile_pk, **_: reverse(
+                "profilecertificates-list", kwargs={"profile_pk": profile_pk}
+            ),
         )
     )
     back_to_profiles_br = html.br(attrs__clear="all")
@@ -31,8 +33,12 @@ class ProfileCertificateEdit(Page):
         title=_("Edit certificate"),
         auto__model=ProfileCertificateReference,
         instance=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk),
-        editable=has_permission_lambda("skillsManager.change_profilecertificateedit"),
-        actions__submit__include=has_permission_lambda("skillsManager.change_profilecertificateedit"),
+        editable=has_permission_lambda(
+            "skillsManager.change_profilecertificatereference"
+        ),
+        actions__submit__include=has_permission_lambda(
+            "skillsManager.change_profilecertificatereference"
+        ),
         actions__download=Action.submit(
             display_name=_("Download certificate"),
             post_handler=download_certificate,
@@ -44,7 +50,8 @@ class ProfileCertificateEdit(Page):
             include=lambda pk, **_: ProfileCertificateReference.objects.get(pk=pk).file,
         ),
         extra__redirect=lambda profile_pk, **_: redirect(
-            reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk})),
+            reverse("profilecertificates-list", kwargs={"profile_pk": profile_pk})
+        ),
     )
 
 
@@ -59,16 +66,24 @@ class ProfileCertificateView(Page):
     certificates = Table(
         auto__model=ProfileCertificateReference,
         page_size=10,
-        rows=lambda profile_pk, **_: ProfileCertificateReference.objects.filter(profile_id=profile_pk),
+        rows=lambda profile_pk, **_: ProfileCertificateReference.objects.filter(
+            profile_id=profile_pk
+        ),
         columns__file=Column(
             cell__value=lambda row, **_: row.file.url if row.file else "",
             cell__format=lambda value, **_: (
                 mark_safe('<a href="%s">Download</a>' % value) if value != "" else ""
             ),
         ),
-        columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_profilecertificatereference")),
+        columns__edit=Column.edit(
+            include=has_permission_lambda(
+                "skillsManager.view_profilecertificatereference"
+            )
+        ),
         columns__delete=Column.delete(
-            include=has_permission_lambda("skillsManager.delete_profilecertificatereference")
+            include=has_permission_lambda(
+                "skillsManager.delete_profilecertificatereference"
+            )
         ),
     )
 
@@ -84,5 +99,7 @@ class ProfileCertificateView(Page):
 
 
 profile_certificate_delete = Form.delete(
-    instance=lambda profile_pk, pk, **_: ProfileCertificateReference.objects.get(profile_id=profile_pk, pk=pk)
+    instance=lambda profile_pk, pk, **_: ProfileCertificateReference.objects.get(
+        profile_id=profile_pk, pk=pk
+    )
 )
