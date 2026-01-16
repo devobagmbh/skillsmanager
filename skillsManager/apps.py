@@ -24,6 +24,12 @@ class SkillsmanagerConfig(AppConfig):
                     tag="style",
                     text=get_template(template_name="style.css").render(dict()),
                 ),
+                root__assets__easymde_css=Asset.css(
+                    attrs__href="https://unpkg.com/easymde/dist/easymde.min.css"
+                ),
+                root__assets__easymds_js=Asset.js(
+                    attrs__src="https://unpkg.com/easymde/dist/easymde.min.js"
+                ),
                 root__assets__favicon=Asset(template="favicon.html"),
                 root__assets__foundation_call=Asset(template="foundationcall.html", in_body=True)
             ),

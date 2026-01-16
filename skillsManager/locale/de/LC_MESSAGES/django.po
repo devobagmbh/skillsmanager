@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-04 11:39+0100\n"
+"POT-Creation-Date: 2026-01-16 15:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -322,15 +322,15 @@ msgstr ""
 msgid "Welcome to skills Manager. Please select a menu option on the left."
 msgstr "Willkomen bei skills Manager. Bitte wähle aus dem Menü links."
 
-#: skillsManager/views/profile/certificate.py:31
+#: skillsManager/views/profile/certificate.py:33
 msgid "Edit certificate"
 msgstr "Zertifikat bearbeiten"
 
-#: skillsManager/views/profile/certificate.py:37
+#: skillsManager/views/profile/certificate.py:43
 msgid "Download certificate"
 msgstr "Zertifikat herunterladen"
 
-#: skillsManager/views/profile/certificate.py:42
+#: skillsManager/views/profile/certificate.py:48
 msgid "Delete certificate file"
 msgstr "Zertifikat löschen"
 
@@ -359,16 +359,20 @@ msgstr "Projektarbeiten"
 
 #: skillsManager/views/profile/project_work.py:40
 msgid "New project work entry"
-msgstr "Neue Projektearbeit"
+msgstr "Neue Projektarbeit"
 
 #: skillsManager/views/profile/project_work.py:79
-#: skillsManager/views/profile/skill.py:16
-msgid "← Back to profile"
-msgstr "← Zurück zu den Profilen"
+#| msgid "Project work entries"
+msgid "← Back to project work entries"
+msgstr "Zurück zu den Projektarbeiten"
 
 #: skillsManager/views/profile/project_work.py:85
 msgid "Project Work entry"
 msgstr "Projektarbeit"
+
+#: skillsManager/views/profile/skill.py:16
+msgid "← Back to profile"
+msgstr "← Zurück zu den Profilen"
 
 #: skillsManager/views/profile/skill.py:22
 msgid "Edit skill"
