@@ -47,6 +47,7 @@ class ProjectWorkView(Page):
         ),
         fields__remarkseditor=Field.hidden(
             attr=None,
+            required=False,
             label__children__script=
             html.script(
                 mark_safe(
@@ -105,6 +106,7 @@ class ProjectWorkEdit(Page):
         ),
         fields__remarkseditor=Field.hidden(
             attr=None,
+            required=False,
             label__children__script=
             html.script(
                 mark_safe(
