@@ -49,8 +49,8 @@ INSTALLED_APPS = [
                      "skillsManager",
                      "auditlog",
                      "django_fastdev",
-                     "markdownify.apps.MarkdownifyConfig",
                      "iommi",
+                     "markdown_deux",
                  ] + (
                      ["azure_auth"] if os.environ.get("AZURE_ENABLED", "false").lower() == "true" else []
                  )

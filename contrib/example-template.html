@@ -1,4 +1,4 @@
-{% load markdownify %}
+{% load markdown_deux_tags %}
 <!DOCTYPE html>
 <html lang="de">
 
@@ -217,7 +217,7 @@
                     </div>
                     <div class="clear"></div>
                     <div class="topics">
-                        {{ project_work.project_work.remarks|markdownify }}
+                        {{ project_work.project_work.remarks|markdown }}
                     </div>
                     <div class="clear"></div>
                     <div class="skills">
