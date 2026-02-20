@@ -79,9 +79,9 @@ class CVPage(Page):
 
     profile_select = Form(
         extra__preview="",
-        fields__profile=Field.choice_queryset(Profile.objects.all(), display_name=_("Profile"), model=Profile),
+        fields__profile=Field.choice_queryset(choices=Profile.objects.all(), display_name=_("Profile"), model=Profile),
         fields__template=Field.choice_queryset(
-            Template.objects.all(),
+            choices=Template.objects.all(),
             display_name=_("Template"),
             model=Template,
             initial=lambda **_: (
