@@ -5,7 +5,8 @@ from iommi import register_style, Style, Asset, style_foundation
 
 def azure_user_mapping_fn(**attributes):
     return {
-        "full_name": attributes["givenName"] + attributes["surname"],
+        "first_name": attributes["givenName"],
+        "last_name": attributes["surname"],
         "email": attributes["mail"],
         "is_staff": True,
     }
