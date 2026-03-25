@@ -28,6 +28,7 @@ urlpatterns = [
     path("", include("skillsManager.urls")),
     path("", RedirectView.as_view(url="/home")),
     path("media/<path:file_path>", media, name="media"),
+    path("api-auth/", include("rest_framework.urls")),
 ]
 
 if os.environ.get("AZURE_ENABLED", "false").lower() == "true":
