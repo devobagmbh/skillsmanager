@@ -1,9 +1,10 @@
 import os
 
-from django.urls import path
+from django.urls import path, include
 from django.utils.translation import gettext as _
 from iommi.main_menu import MainMenu, M, EXTERNAL
 
+from .api import v1_router
 from .middleware.auth import has_permission_for_name
 from .views import (
     cv,
@@ -274,4 +275,6 @@ menu_declaration = MainMenu(
     )
 )
 
-urlpatterns = menu_declaration.urlpatterns()
+urlpatterns = menu_declaration.urlpatterns() + [
+    path("api/", include(v1_router.urls))
+]

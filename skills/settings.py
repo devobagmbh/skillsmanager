@@ -49,6 +49,9 @@ INSTALLED_APPS = [
                      "skillsManager",
                      "auditlog",
                      "django_fastdev",
+                     "django_filters",
+                     "rest_framework",
+                     "rest_framework.authtoken",
                      "iommi",
                      "markdown_deux",
                  ] + (
@@ -186,3 +189,14 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SKILLSMANAGER_USE_RBAC = os.environ.get("SKILLSMANAGER_USE_RBAC", "False").lower() == "true"
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
+}
