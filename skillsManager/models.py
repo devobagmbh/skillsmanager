@@ -111,7 +111,7 @@ class ProfileSkillReference(models.Model):
 class Customer(models.Model):
     name = models.CharField(_("Name"), max_length=200)
     industry = models.CharField(_("Industry"), max_length=200, blank=True, null=True)
-    description = models.TextField(_("Description"), blank=True, null=True)
+    description = models.TextField(_("Customer description"), blank=True, null=True)
     parent_customer = models.ForeignKey(
         "self", blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Parent customer")
     )
@@ -144,7 +144,7 @@ class CustomerLog(models.Model):
 
 class Project(models.Model):
     name = models.CharField(_("Name"), max_length=200)
-    description = models.TextField(_("Description"), blank=True, null=True)
+    description = models.TextField(_("Project description"), blank=True, null=True)
     customer = models.ForeignKey(Customer, verbose_name=_("Customer"), on_delete=models.CASCADE)
     active_since = models.DateField(_("Active since"), default=now)
     active_until = models.DateField(_("Active until"), blank=True, null=True)
