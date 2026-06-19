@@ -94,6 +94,7 @@ class ProfileView(Page):
         title=_("Profiles"),
         auto__model=Profile,
         page_size=10,
+        default_sort_order="last_name",
         columns__birthday=Column(
             display_name=_("Birthday"),
             include=has_permission_lambda("skillsManager.view_profilemeta"),

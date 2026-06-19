@@ -26,6 +26,7 @@ class CustomerEdit(Page):
         title=_("Projects"),
         auto__model=Project,
         rows=lambda pk, **_: Project.objects.filter(customer__pk=pk),
+        default_sort_order="name",
         columns__log=Column.link(
             display_name=_("Project log"),
             attr=None,
@@ -52,6 +53,7 @@ class CustomerView(Page):
         title=_("Customers"),
         auto__model=Customer,
         page_size=10,
+        default_sort_order="name",
         columns__projects=Column(
             cell__value=lambda row, **_: Project.objects.filter(customer=row)
         ),

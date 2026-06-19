@@ -11,6 +11,7 @@ class TemplateView(Page):
         title=_("Templates"),
         auto__model=Template,
         page_size=10,
+        default_sort_order="name",
         columns__template__include=False,
         columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_template")),
         columns__delete=Column.delete(include=has_permission_lambda("skillsManager.delete_skill")),

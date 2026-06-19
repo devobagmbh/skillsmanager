@@ -10,6 +10,7 @@ class SkillView(Page):
     skills_table = Table(
         auto__model=Skill,
         page_size=10,
+        default_sort_order="name",
         columns__name__filter__include=True,
         columns__description__filter__include=True,
         columns__edit=Column.edit(include=has_permission_lambda("skillsManager.view_skill")),
