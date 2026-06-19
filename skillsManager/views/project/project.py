@@ -6,13 +6,26 @@ from iommi import Form, Field, Page, html, EditTable, EditColumn
 from skillsManager.middleware.auth import has_permission_lambda
 from skillsManager.models import Project, Customer, ProjectLog
 
-project_edit = Form.edit(
-    auto__model=Project,
-    instance=lambda pk, **_: Project.objects.get(pk=pk),
-    fields__customer=Field.non_rendered(initial=lambda customer_pk, **_: Customer.objects.get(pk=customer_pk)),
-    editable=has_permission_lambda("skillsManager.change_project"),
-    actions__submit__include=has_permission_lambda("skillsManager.change_project"),
-)
+
+class ProjectEdit(Page):
+    back = html.div(
+        children__backlink=html.a(
+            children__text=lambda customer_pk, **__: _("← Back to %(customer)s") % {
+                "customer": Customer.objects.get(pk=customer_pk).name},
+            attrs__href=lambda customer_pk, **_: reverse("customer-edit", kwargs={"pk": customer_pk}),
+        )
+    )
+
+    back_to_customer_br = html.br(attrs__clear="all")
+
+    project_edit = Form.edit(
+        auto__model=Project,
+        instance=lambda pk, **_: Project.objects.get(pk=pk),
+        fields__customer=Field.non_rendered(initial=lambda customer_pk, **_: Customer.objects.get(pk=customer_pk)),
+        editable=has_permission_lambda("skillsManager.change_project"),
+        actions__submit__include=has_permission_lambda("skillsManager.change_project"),
+    )
+
 
 project_delete = Form.delete(
     instance=lambda pk, **_: Project.objects.get(pk)

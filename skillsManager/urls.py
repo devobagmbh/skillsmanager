@@ -200,7 +200,7 @@ menu_declaration = MainMenu(
                     ),
                     path(
                         "<int:customer_pk>/projects/<int:pk>/edit/",
-                        project.project.project_edit.as_view(),
+                        project.project.ProjectEdit().as_view(),
                         name="projects-edit",
                     ),
                     path(
