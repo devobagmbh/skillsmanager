@@ -113,7 +113,7 @@ class Customer(models.Model):
     industry = models.CharField(_("Industry"), max_length=200, blank=True, null=True)
     description = models.TextField(_("Description"), blank=True, null=True)
     parent_customer = models.ForeignKey(
-        "self", blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Customer")
+        "self", blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Parent customer")
     )
     active_since = models.DateField(_("Active since"), default=now)
     active_until = models.DateField(_("Active until"), blank=True, null=True)
