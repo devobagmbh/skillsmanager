@@ -45,6 +45,7 @@ class ProjectWorkView(Page):
         fields__profile=Field.non_rendered(
             initial=lambda profile_pk, **_: Profile.objects.get(pk=profile_pk)
         ),
+        fields__project__search_fields=('name', 'customer__name'),
         fields__remarkseditor=Field.hidden(
             attr=None,
             required=False,
