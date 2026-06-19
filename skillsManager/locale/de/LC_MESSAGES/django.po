@@ -373,7 +373,7 @@ msgstr "Neue Projektarbeit"
 
 #: skillsManager/views/profile/project_work.py:96
 msgid "← Back to project work entries"
-msgstr "Zurück zu den Projektarbeiten"
+msgstr "← Zurück zu den Projektarbeiten"
 
 #: skillsManager/views/profile/project_work.py:102
 msgid "Project Work entry"

@@ -124,6 +124,7 @@ class ProjectWorkEdit(Page):
             choices=lambda user, profile_pk, **_: ProfileSkillReference.objects.filter(
                 profile__pk=profile_pk
             ).all(),
+            required=False,
             initial=get_initial,
             include=has_permission_lambda("skillsManager.change_profileprojectreference")
         ),
