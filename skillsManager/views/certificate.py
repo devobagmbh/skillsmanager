@@ -26,6 +26,7 @@ class VendorEdit(Page):
         title=_("Certificates"),
         auto__model=Certificate,
         rows=lambda pk, **_: Certificate.objects.filter(vendor__pk=pk),
+        default_sort_order="name",
         columns__vendor__field=Field.non_rendered(
             initial=lambda pk, **_: CertificateVendor.objects.get(pk=pk)
         ),
@@ -45,6 +46,7 @@ class VendorView(Page):
         title=_("Vendors"),
         auto__model=CertificateVendor,
         page_size=10,
+        default_sort_order="name",
         columns__certificates=Column(
             display_name=_("Certificates"),
             cell__value=lambda row, **_: Certificate.objects.filter(vendor=row)
