@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -21,6 +22,8 @@ class ProjectEdit(Page):
     project_edit = Form.edit(
         auto__model=Project,
         instance=lambda pk, **_: Project.objects.get(pk=pk),
+        extra__redirect=lambda customer_pk, **_: redirect(
+            reverse("customer-edit", kwargs={"pk": customer_pk})),
         fields__customer=Field.non_rendered(initial=lambda customer_pk, **_: Customer.objects.get(pk=customer_pk)),
         editable=has_permission_lambda("skillsManager.change_project"),
         actions__submit__include=has_permission_lambda("skillsManager.change_project"),
