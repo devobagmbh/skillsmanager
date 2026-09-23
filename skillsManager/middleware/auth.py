@@ -14,7 +14,7 @@ from skillsManager.models import Profile, Template, Skill, ProfileMeta, Language
 path_map: dict[str, tuple[str, str, str, list[type[Model]]]] = {
     "home": (r"^/(home/)?$", "GET", "none", []),
 
-    "media": (r"^/media/.+$", "GET", "auth", []),
+    "media": (r"^/media/.+$", "GET", "none", []),
 
     "admin": (r"^/admin/.*$", "GET", "superuser", []),
     "admin-post": (r"^/admin/.*$", "POST", "superuser", []),

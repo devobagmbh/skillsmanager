@@ -164,6 +164,7 @@ AZURE_AUTH = {
     "USERNAME_ATTRIBUTE": "mail",
     "GROUP_ATTRIBUTE": "groups",
     "USER_MAPPING_FN": "skillsManager.apps.azure_user_mapping_fn",
+    "PUBLIC_PATHS": ['/media/', ],
 }
 
 if os.environ.get("AZURE_ROLES", "") != "":

@@ -40,7 +40,7 @@ tinyhtml5==2.0.0
 types-PyYAML==6.0.12.20250915
 typing_extensions==4.15.0
 urllib3==2.6.3
-weasyprint==68.1
+weasyprint==69.0
 webencodings==0.5.1
 whitenoise==6.11.0
 zopfli==0.4.1
