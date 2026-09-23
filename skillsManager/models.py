@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from auditlog.registry import auditlog
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
@@ -34,6 +37,13 @@ class ProfileMeta(models.Model):
     job_title = models.CharField(_("Job title"), max_length=200, blank=True, null=True)
     description = models.TextField(_("Description"), blank=True, null=True)
     maturity_level = models.PositiveSmallIntegerField(_("Maturity level"), default=7)
+
+    @property
+    def age(self):
+        if self.birthday:
+            return relativedelta(datetime.now(), self.birthday).years
+        else:
+            return 0
 
     @property
     def maturity_level_percent(self, max=10):
