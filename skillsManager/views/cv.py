@@ -16,7 +16,7 @@ from ..models import (
     Education,
     ProfileProjectReference,
     ProfileProjectSkillReference,
-    ProfileCertificateReference,
+    ProfileCertificateReference, Skill,
 )
 
 
@@ -34,6 +34,12 @@ def get_context(profile):
             )
         )
 
+    skills = []
+    for profile_skill in ProfileSkillReference.objects.filter(profile=profile).order_by(
+            "-level"
+    ):
+        skills.append(Skill.objects.get(pk=profile_skill.skill.pk))
+
     return Context(
         dict(
             profile=profile,
@@ -42,9 +48,7 @@ def get_context(profile):
             educations=Education.objects.filter(profile=profile),
             certificates=ProfileCertificateReference.objects.filter(profile=profile),
             project_works=project_works,
-            skills=ProfileSkillReference.objects.filter(profile=profile).order_by(
-                "-level"
-            ),
+            skills=skills,
         )
     )
 
