@@ -52,8 +52,9 @@ def get_context(profile):
             "description": raw_category.description,
             "skills": [],
         }
-        for skill in raw_category.skill_set.all():
-            if skill in skills:
+        category_skills = raw_category.skill_set.all()
+        for skill in skills:
+            if skill in category_skills:
                 context_category["skills"].append(skill)
         context_categories.append(context_category)
 
