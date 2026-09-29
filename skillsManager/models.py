@@ -84,10 +84,30 @@ class Language(models.Model):
 auditlog.register(Language)
 
 
+class SkillCategory(models.Model):
+    name = models.CharField(_("Name"), max_length=200)
+    description = models.TextField(_("Description"), blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse("skillcategory-view", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Skill category")
+        verbose_name_plural = _("Skill categories")
+
+
+auditlog.register(SkillCategory)
+
+
 class Skill(models.Model):
     name = models.CharField(_("Name"), max_length=200)
     description = models.TextField(_("Description"), blank=True, null=True)
     related_skills = models.ManyToManyField("self", verbose_name=_("Related skills"), symmetrical=False, blank=True)
+    category = models.ForeignKey(SkillCategory, verbose_name=_("Skill category"), on_delete=models.CASCADE, blank=True,
+                                 null=True)
 
     def get_absolute_url(self):
         return reverse("skill-view", kwargs={"pk": self.pk})

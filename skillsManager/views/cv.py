@@ -34,11 +34,28 @@ def get_context(profile):
             )
         )
 
+    raw_categories = []
+
     skills = []
     for profile_skill in ProfileSkillReference.objects.filter(profile=profile).order_by(
             "-level"
     ):
         skills.append(Skill.objects.get(pk=profile_skill.skill.pk))
+        if profile_skill.skill.category is not None and profile_skill.skill.category not in raw_categories:
+            raw_categories.append(profile_skill.skill.category)
+
+    context_categories = []
+
+    for raw_category in raw_categories:
+        context_category = {
+            "name": raw_category.name,
+            "description": raw_category.description,
+            "skills": [],
+        }
+        for skill in raw_category.skill_set.all():
+            if skill in skills:
+                context_category["skills"].append(skill)
+        context_categories.append(context_category)
 
     return Context(
         dict(
@@ -49,6 +66,7 @@ def get_context(profile):
             certificates=ProfileCertificateReference.objects.filter(profile=profile),
             project_works=project_works,
             skills=skills,
+            skill_categories=context_categories
         )
     )
 
