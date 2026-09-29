@@ -127,15 +127,26 @@ menu_declaration = MainMenu(
                 include=lambda user, **_: has_permission_for_name(user, "skills-list"),
                 paths=[
                     path("<int:pk>/", skill.SkillEdit().as_view(), name="skill-view"),
+                    path("category/<int:pk>/", skill.SkillCategoryEdit().as_view(), name="skillcategory-view"),
                     path(
                         "<int:pk>/edit/",
                         skill.SkillEdit().as_view(),
                         name="skill-edit",
                     ),
                     path(
+                        "category/<int:pk>/edit/",
+                        skill.SkillCategoryEdit().as_view(),
+                        name="skillcategory-edit",
+                    ),
+                    path(
                         "<int:pk>/delete/",
                         skill.skill_delete.as_view(),
                         name="skill-delete",
+                    ),
+                    path(
+                        "category/<int:pk>/delete/",
+                        skill.skillcategory_delete.as_view(),
+                        name="skillcategory-delete",
                     ),
                 ],
             ),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-19 09:39+0200\n"
+"POT-Creation-Date: 2026-09-29 07:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,256 +18,266 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: skillsManager/models.py:9
+#: skillsManager/models.py:12
 msgid "Given name"
 msgstr "Vorname"
 
-#: skillsManager/models.py:10
+#: skillsManager/models.py:13
 msgid "Last name"
 msgstr "Nachname"
 
-#: skillsManager/models.py:11
+#: skillsManager/models.py:14
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: skillsManager/models.py:12 skillsManager/models.py:118
-#: skillsManager/models.py:149 skillsManager/models.py:168
-#: skillsManager/models.py:245
+#: skillsManager/models.py:15 skillsManager/models.py:148
+#: skillsManager/models.py:179 skillsManager/models.py:198
+#: skillsManager/models.py:275
 msgid "Active since"
 msgstr "Aktiv seit"
 
-#: skillsManager/models.py:13 skillsManager/models.py:119
-#: skillsManager/models.py:150 skillsManager/models.py:169
-#: skillsManager/models.py:246
+#: skillsManager/models.py:16 skillsManager/models.py:149
+#: skillsManager/models.py:180 skillsManager/models.py:199
+#: skillsManager/models.py:276
 msgid "Active until"
 msgstr "Aktiv bis"
 
-#: skillsManager/models.py:22 skillsManager/models.py:30
-#: skillsManager/models.py:54 skillsManager/models.py:66
-#: skillsManager/models.py:94 skillsManager/models.py:166
-#: skillsManager/models.py:243 skillsManager/views/cv.py:82
+#: skillsManager/models.py:25 skillsManager/models.py:33
+#: skillsManager/models.py:64 skillsManager/models.py:76
+#: skillsManager/models.py:124 skillsManager/models.py:196
+#: skillsManager/models.py:273 skillsManager/views/cv.py:104
 #: skillsManager/views/profile/profile.py:34
 msgid "Profile"
 msgstr "Profile"
 
-#: skillsManager/models.py:23 skillsManager/urls.py:41
+#: skillsManager/models.py:26 skillsManager/urls.py:41
 #: skillsManager/views/profile/profile.py:94
 msgid "Profiles"
 msgstr "Profile"
 
-#: skillsManager/models.py:31 skillsManager/views/profile/profile.py:99
+#: skillsManager/models.py:34 skillsManager/views/profile/profile.py:99
 msgid "Birthday"
 msgstr "Geburtstag"
 
-#: skillsManager/models.py:32 skillsManager/views/profile/profile.py:108
+#: skillsManager/models.py:35 skillsManager/views/profile/profile.py:108
 msgid "Photo"
 msgstr "Foto"
 
-#: skillsManager/models.py:33
+#: skillsManager/models.py:36
 msgid "Available from"
 msgstr "Verfügbar ab"
 
-#: skillsManager/models.py:34
+#: skillsManager/models.py:37
 msgid "Job title"
 msgstr "Jobtitel"
 
-#: skillsManager/models.py:35 skillsManager/models.py:79
-#: skillsManager/models.py:226 skillsManager/models.py:266
+#: skillsManager/models.py:38 skillsManager/models.py:89
+#: skillsManager/models.py:107 skillsManager/models.py:256
+#: skillsManager/models.py:296
 msgid "Description"
 msgstr "Beschreibung"
 
-#: skillsManager/models.py:36 skillsManager/views/profile/profile.py:50
+#: skillsManager/models.py:39 skillsManager/views/profile/profile.py:50
 msgid "Maturity level"
 msgstr "Erfahrungslevel"
 
-#: skillsManager/models.py:46
+#: skillsManager/models.py:56
 msgid "Profile meta"
 msgstr "Erweitertes Profil"
 
-#: skillsManager/models.py:47
+#: skillsManager/models.py:57
 msgid "Profile metas"
 msgstr "Erweiterte Profile"
 
-#: skillsManager/models.py:55 skillsManager/models.py:78
-#: skillsManager/models.py:112 skillsManager/models.py:146
-#: skillsManager/models.py:210 skillsManager/models.py:225
-#: skillsManager/models.py:265
+#: skillsManager/models.py:65 skillsManager/models.py:88
+#: skillsManager/models.py:106 skillsManager/models.py:142
+#: skillsManager/models.py:176 skillsManager/models.py:240
+#: skillsManager/models.py:255 skillsManager/models.py:295
 msgid "Name"
 msgstr "Name"
 
-#: skillsManager/models.py:58 skillsManager/views/profile/profile.py:75
+#: skillsManager/models.py:68 skillsManager/views/profile/profile.py:75
 msgid "Education"
 msgstr "Ausbildung"
 
-#: skillsManager/models.py:59
+#: skillsManager/models.py:69
 msgid "Educations"
 msgstr "Ausbildungen"
 
-#: skillsManager/models.py:67 skillsManager/models.py:70
+#: skillsManager/models.py:77 skillsManager/models.py:80
 msgid "Language"
 msgstr "Sprache"
 
-#: skillsManager/models.py:71 skillsManager/views/profile/profile.py:59
+#: skillsManager/models.py:81 skillsManager/views/profile/profile.py:59
 msgid "Languages"
 msgstr "Sprachen"
 
-#: skillsManager/models.py:80
+#: skillsManager/models.py:98 skillsManager/models.py:109
+#| msgid "Skill search"
+msgid "Skill category"
+msgstr "Fähigkeitskategorie"
+
+#: skillsManager/models.py:99
+msgid "Skill categories"
+msgstr "Fähigkeitskategorien"
+
+#: skillsManager/models.py:108
 msgid "Related skills"
 msgstr "Zugehörige Fähigkeiten"
 
-#: skillsManager/models.py:89 skillsManager/models.py:95
-#: skillsManager/models.py:186 skillsManager/views/skill_search.py:51
+#: skillsManager/models.py:119 skillsManager/models.py:125
+#: skillsManager/models.py:216 skillsManager/views/skill_search.py:51
 msgid "Skill"
 msgstr "Fähigkeit"
 
-#: skillsManager/models.py:90 skillsManager/urls.py:124
+#: skillsManager/models.py:120 skillsManager/urls.py:124
 #: skillsManager/views/profile/profile.py:122
 #: skillsManager/views/profile/profile.py:128
 #: skillsManager/views/profile/project_work.py:32
-#: skillsManager/views/profile/project_work.py:131
+#: skillsManager/views/profile/project_work.py:133
 #: skillsManager/views/skill_search.py:11
 msgid "Skills"
 msgstr "Fähigkeiten"
 
-#: skillsManager/models.py:96
+#: skillsManager/models.py:126
 msgid "Level"
 msgstr "Erfahrung"
 
-#: skillsManager/models.py:97
+#: skillsManager/models.py:127
 msgid "Favorite"
 msgstr "Beliebtheit"
 
-#: skillsManager/models.py:98 skillsManager/models.py:170
+#: skillsManager/models.py:128 skillsManager/models.py:200
 msgid "Remarks"
 msgstr "Hinweise"
 
-#: skillsManager/models.py:107
+#: skillsManager/models.py:137
 msgid "Profile skill reference"
 msgstr "Fähigkeitenreferenz"
 
-#: skillsManager/models.py:108
+#: skillsManager/models.py:138
 msgid "Profile skill references"
 msgstr "Fähigkeitenreferenzen"
 
-#: skillsManager/models.py:113
+#: skillsManager/models.py:143
 msgid "Industry"
 msgstr "Branche"
 
-#: skillsManager/models.py:114
+#: skillsManager/models.py:144
 msgid "Customer description"
 msgstr "Allgemeine Kundenbeschreibung"
 
-#: skillsManager/models.py:116
+#: skillsManager/models.py:146
 msgid "Parent customer"
 msgstr "Übergeordneter Kunde"
 
-#: skillsManager/models.py:128 skillsManager/models.py:133
-#: skillsManager/models.py:148 skillsManager/views/project/customer.py:19
+#: skillsManager/models.py:158 skillsManager/models.py:163
+#: skillsManager/models.py:178 skillsManager/views/project/customer.py:19
 msgid "Customer"
 msgstr "Kunde"
 
-#: skillsManager/models.py:129 skillsManager/views/project/customer.py:53
+#: skillsManager/models.py:159 skillsManager/views/project/customer.py:53
 msgid "Customers"
 msgstr "Kunden"
 
-#: skillsManager/models.py:134 skillsManager/models.py:198
+#: skillsManager/models.py:164 skillsManager/models.py:228
 msgid "Notice"
 msgstr "Notizen"
 
-#: skillsManager/models.py:135 skillsManager/models.py:199
+#: skillsManager/models.py:165 skillsManager/models.py:229
 msgid "Timestamp"
 msgstr "Zeitstempel"
 
-#: skillsManager/models.py:141 skillsManager/views/project/customer.py:61
+#: skillsManager/models.py:171 skillsManager/views/project/customer.py:61
 #: skillsManager/views/project/customer.py:66
 msgid "Customer log"
 msgstr "Kundenprotokoll"
 
-#: skillsManager/models.py:142
+#: skillsManager/models.py:172
 msgid "Customer logs"
 msgstr "Kundenprotokolle"
 
-#: skillsManager/models.py:147
+#: skillsManager/models.py:177
 msgid "Project description"
 msgstr "Allgemeine Projektbeschreibung"
 
-#: skillsManager/models.py:161 skillsManager/models.py:167
-#: skillsManager/models.py:197
+#: skillsManager/models.py:191 skillsManager/models.py:197
+#: skillsManager/models.py:227
 msgid "Project"
 msgstr "Projekte"
 
-#: skillsManager/models.py:162 skillsManager/urls.py:166
+#: skillsManager/models.py:192 skillsManager/urls.py:177
 #: skillsManager/views/project/customer.py:26
 msgid "Projects"
 msgstr "Projekte"
 
-#: skillsManager/models.py:178 skillsManager/models.py:184
+#: skillsManager/models.py:208 skillsManager/models.py:214
 msgid "Profile project reference"
 msgstr "Projektarbeit"
 
-#: skillsManager/models.py:179
+#: skillsManager/models.py:209
 msgid "Profile project references"
 msgstr "Projektarbeiten"
 
-#: skillsManager/models.py:192
+#: skillsManager/models.py:222
 msgid "Profile project skill reference"
 msgstr "Projektfähigkeitenreferenz"
 
-#: skillsManager/models.py:193
+#: skillsManager/models.py:223
 msgid "Profile project skill references"
 msgstr "Projektfähigkeitenreferenzen"
 
-#: skillsManager/models.py:205 skillsManager/views/project/customer.py:31
+#: skillsManager/models.py:235 skillsManager/views/project/customer.py:31
 #: skillsManager/views/project/customer.py:36
 msgid "Project log"
 msgstr "Projektprotokoll"
 
-#: skillsManager/models.py:206
+#: skillsManager/models.py:236
 msgid "Project logs"
 msgstr "Projektprotokolle"
 
-#: skillsManager/models.py:219
+#: skillsManager/models.py:249
 msgid "Certificate vendor"
 msgstr "Zertifikatsanbieter"
 
-#: skillsManager/models.py:220
+#: skillsManager/models.py:250
 msgid "Certificate vendors"
 msgstr "Zertifikatsanbieter"
 
 #. Translators: This is the title of certificate vendors
-#: skillsManager/models.py:224 skillsManager/views/certificate.py:19
+#: skillsManager/models.py:254 skillsManager/views/certificate.py:19
 msgid "Vendor"
 msgstr "Anbieter"
 
-#: skillsManager/models.py:232 skillsManager/models.py:244
+#: skillsManager/models.py:262 skillsManager/models.py:274
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: skillsManager/models.py:233 skillsManager/urls.py:143
+#: skillsManager/models.py:263 skillsManager/urls.py:154
 #: skillsManager/views/certificate.py:26 skillsManager/views/certificate.py:51
 #: skillsManager/views/profile/profile.py:131
 #: skillsManager/views/profile/profile.py:137
 msgid "Certificates"
 msgstr "Zertifikate"
 
-#: skillsManager/models.py:247
+#: skillsManager/models.py:277
 msgid "File"
 msgstr "Datei"
 
-#: skillsManager/models.py:260
+#: skillsManager/models.py:290
 msgid "Profile certificate reference"
 msgstr "Profilzertifikat"
 
-#: skillsManager/models.py:261
+#: skillsManager/models.py:291
 msgid "Profile certificate references"
 msgstr "Profilzertifikate"
 
-#: skillsManager/models.py:267 skillsManager/models.py:276
-#: skillsManager/views/cv.py:85
+#: skillsManager/models.py:297 skillsManager/models.py:306
+#: skillsManager/views/cv.py:107
 msgid "Template"
 msgstr "Vorlage"
 
-#: skillsManager/models.py:277 skillsManager/urls.py:219
+#: skillsManager/models.py:307 skillsManager/urls.py:230
 #: skillsManager/views/template.py:11
 msgid "Templates"
 msgstr "Vorlagen"
@@ -284,11 +294,11 @@ msgstr "CV"
 msgid "Search"
 msgstr "Suchen"
 
-#: skillsManager/urls.py:242
+#: skillsManager/urls.py:253
 msgid "Administration"
 msgstr "Administration"
 
-#: skillsManager/urls.py:249
+#: skillsManager/urls.py:260
 msgid "Login"
 msgstr "Anmelden"
 
@@ -304,15 +314,15 @@ msgstr "Anbieter"
 msgid "New certificate vendor"
 msgstr "Neuer Zertifikatsanbieter"
 
-#: skillsManager/views/cv.py:78
+#: skillsManager/views/cv.py:100
 msgid "CV exporter"
 msgstr "CV-Exporter"
 
-#: skillsManager/views/cv.py:92
+#: skillsManager/views/cv.py:114
 msgid "Preview"
 msgstr "Vorschau"
 
-#: skillsManager/views/cv.py:94
+#: skillsManager/views/cv.py:116
 msgid "Export"
 msgstr "Exportieren"
 
@@ -371,11 +381,11 @@ msgstr "Projektarbeiten"
 msgid "New project work entry"
 msgstr "Neue Projektarbeit"
 
-#: skillsManager/views/profile/project_work.py:96
+#: skillsManager/views/profile/project_work.py:97
 msgid "← Back to project work entries"
 msgstr "← Zurück zu den Projektarbeiten"
 
-#: skillsManager/views/profile/project_work.py:102
+#: skillsManager/views/profile/project_work.py:103
 msgid "Project Work entry"
 msgstr "Projektarbeit"
 
@@ -405,20 +415,24 @@ msgid "New customer"
 msgstr "Neuer Kunde"
 
 #: skillsManager/views/project/project.py:14
-#, fuzzy, python-format
 #| msgid "← Back to customers"
 msgid "← Back to %(customer)s"
-msgstr "← Zurück zu Kunden"
+msgstr "← Zurück zu Kunde $(customer)s"
 
 #: skillsManager/views/project/project.py:41
 msgid "← Back to customer"
 msgstr "← Zurück zum Kunden"
 
-#: skillsManager/views/skill.py:20
+#: skillsManager/views/skill.py:18
+#| msgid "New skill"
+msgid "New skill category"
+msgstr "Neue Fähigkeitenkategorie"
+
+#: skillsManager/views/skill.py:33
 msgid "New skill"
 msgstr "Neue Fähigkeit"
 
-#: skillsManager/views/skill.py:30
+#: skillsManager/views/skill.py:43 skillsManager/views/skill.py:59
 msgid "← Back to skills"
 msgstr "← Zurück zu Fähigkeiten"
 
