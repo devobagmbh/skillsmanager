@@ -1,11 +1,13 @@
 import io
 
-from django.http import FileResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import FileResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import Context
 from django.template import Template as DjangoTemplate
 from django.utils.translation import gettext_lazy as _
+from django.http import HttpResponse
+from django.urls import reverse
 from iommi import Action, Page, Form, Field, html
-from weasyprint import HTML
 
 from ..models import (
     Profile,
@@ -74,16 +76,9 @@ def get_context(profile):
 
 def do_export(form, **_):
     if form.is_valid():
-        template = DjangoTemplate(form.fields["template"].value.template)
-        pdf = HTML(
-            string=template.render(
-                context=get_context(form.fields["profile"].value)
-            )
-        )
-        buffer = io.BytesIO()
-        pdf.write_pdf(buffer)
-        buffer.seek(0)
-        return FileResponse(buffer, as_attachment=True, filename="cv.pdf")
+        template = form.fields["template"].value
+        profile = form.fields["profile"].value
+        return HttpResponseRedirect(reverse("cv-export", kwargs={"template_pk": template.pk, "profile_pk": profile.pk}))
     return None
 
 
@@ -95,6 +90,21 @@ def do_preview(form, page, **_):
         )
     else:
         page.parts["preview"].attrs.srcdoc = ""
+
+
+def export_func(_, template_pk, profile_pk):
+    try:
+        template = Template.objects.get(pk=template_pk)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound("Template not found")
+    try:
+        profile = Profile.objects.get(pk=profile_pk)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound("Profile not found")
+    cv = DjangoTemplate(template.template)
+    return HttpResponse(cv.render(
+        context=get_context(profile)
+    ))
 
 
 class CVPage(Page):

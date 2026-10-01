@@ -16,6 +16,7 @@ from .views import (
     certificate,
     project,
 )
+from .views.cv import export_func
 
 menu_declaration = MainMenu(
     items=(
@@ -287,5 +288,6 @@ menu_declaration = MainMenu(
 )
 
 urlpatterns = menu_declaration.urlpatterns() + [
-    path("api/", include(v1_router.urls))
+    path("api/", include(v1_router.urls)),
+    path("cv-export/<int:template_pk>/<int:profile_pk>", export_func, name="cv-export")
 ]
